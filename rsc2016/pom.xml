@@ -58,6 +58,12 @@
         
         <dependency>
             <groupId>com.ibm.watson.developer_cloud</groupId>
+            <artifactId>alchemy</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.ibm.watson.developer_cloud</groupId>
             <artifactId>visual-recognition</artifactId>
             <version>3.5.1</version>
         </dependency>
@@ -81,7 +87,11 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         
-      
+      <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+       </dependency>
         
         <!-- cache -->
         <dependency>
