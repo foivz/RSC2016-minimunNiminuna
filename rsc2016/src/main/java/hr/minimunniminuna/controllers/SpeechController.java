@@ -9,7 +9,6 @@ import com.ibm.watson.developer_cloud.http.HttpMediaType;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
-import hr.minimunniminuna.configurations.Multimedia;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,7 +49,6 @@ public class SpeechController {
         return transcript.toString();
     
     }
-    
     
    public File convert(MultipartFile file) throws IOException
 {    

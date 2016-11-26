@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
   
     <!-- project -->
     <groupId>hr.minimunniminuna</groupId>
@@ -11,14 +11,14 @@
     <url>http://maven.apache.org</url>
     
     <!-- parent POM -->
-   <parent>
+    <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.3.0.RELEASE</version>
         <relativePath />
     </parent>
 
-   <dependencies>
+    <dependencies>
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -37,7 +37,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
      
-         <dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
             <version>4.0.3.RELEASE</version>
@@ -53,6 +53,12 @@
         <dependency>
             <groupId>com.ibm.watson.developer_cloud</groupId>
             <artifactId>speech-to-text</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.ibm.watson.developer_cloud</groupId>
+            <artifactId>visual-recognition</artifactId>
             <version>3.5.1</version>
         </dependency>
         
@@ -75,8 +81,10 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         
+      
+        
         <!-- cache -->
-         <dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>16.0</version>
@@ -87,19 +95,19 @@
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
-       </dependency>
+        </dependency>
         
         <!-- mysql -->
-         <dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         
-       <dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-c3p0</artifactId>
-		<version>4.3.6.Final</version>
-	</dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>4.3.6.Final</version>
+        </dependency>
 
     </dependencies>
     
