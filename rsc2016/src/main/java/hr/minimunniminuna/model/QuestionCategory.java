@@ -5,7 +5,6 @@
  */
 package hr.minimunniminuna.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +31,6 @@ public class QuestionCategory {
     @Column(name="name")
     String name;
     
-    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cat")
     List<Question> questions;
 
