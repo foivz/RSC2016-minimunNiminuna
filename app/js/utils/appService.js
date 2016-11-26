@@ -12,13 +12,26 @@ export function fetchQuizByID(quizID, success) {
 
 export function sendAudio(audio, success) {
     var url = '/speech/';
-    var fd = new FormData();
-    var headers = {
-        'Content-type': 'octet-stream'
-    };
 
-    fd.append('file', audio);
+    var reader = new FileReader();
+    reader.addEventListener("loadend", function() {
 
-    send('POST', url, fd, headers, (res) => success(res), (err) => console.log(err));
+            var base64FileData = reader.result.toString();
+            var base64 = base64FileData.substring(22);
+
+            var data = {
+                data: base64
+            };
+
+            var headers = {
+                'Content-type': 'application/json'
+            };
+
+            send('POST', url, data, headers, (res) => success(res), (err) => console.log(err));
+        });
+
+    reader.readAsDataURL(audio);
+
+
 }
 

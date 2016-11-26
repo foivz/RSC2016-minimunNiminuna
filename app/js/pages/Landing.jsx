@@ -50,10 +50,10 @@ export default class Landing extends React.Component {
             opacity: 1,
             delay: 0.5,
             onComplete: () => {
-                if (username === 'm')
-                    hashHistory.push('/moderator');
-                else if (username === "u")
+                if (username === 'u')
                     hashHistory.push('/user');
+                else
+                    hashHistory.push('/moderator');
             }
         });
     }

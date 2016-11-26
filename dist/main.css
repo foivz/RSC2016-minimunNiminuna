@@ -1108,6 +1108,13 @@ a:hover {
     bottom: -100%;
     opacity: 0; }
 
+.AudioRecorder-button {
+  border: none;
+  width: 100px;
+  padding: 10px 10px;
+  border-radius: 3px;
+  margin: 10px 0; }
+
 #landing {
   position: absolute;
   top: 0;
@@ -1165,3 +1172,7 @@ label.label-copyright {
   height: 500px;
   display: block;
   clear: both; }
+
+.quiz-container {
+  margin-top: 50px;
+  margin-bottom: 50px; }
