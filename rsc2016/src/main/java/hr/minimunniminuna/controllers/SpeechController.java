@@ -9,11 +9,8 @@ import com.ibm.watson.developer_cloud.http.HttpMediaType;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
-import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.BaseRecognizeCallback;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class SpeechController {
     
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    
     public String getTextFromSpeech(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException{
         
         SpeechToText service = new SpeechToText();

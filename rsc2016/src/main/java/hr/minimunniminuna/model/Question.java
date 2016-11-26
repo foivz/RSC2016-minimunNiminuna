@@ -36,6 +36,9 @@ public class Question {
     @Column(name = "answer")
     String answer;
     
+    @Column(name="all_answers")
+    String allAnswers;
+    
     @ManyToOne
     @JoinColumn(name = "id_question_category")
     QuestionCategory cat;
@@ -78,6 +81,22 @@ public class Question {
 
     public void setCat(QuestionCategory cat) {
         this.cat = cat;
+    }
+
+    public String getAllAnswers() {
+        return allAnswers;
+    }
+
+    public void setAllAnswers(String allAnswers) {
+        this.allAnswers = allAnswers;
+    }
+
+    public List<Quiz> getQuizes() {
+        return quizes;
+    }
+
+    public void setQuizes(List<Quiz> quizes) {
+        this.quizes = quizes;
     }
     
     

@@ -108,6 +108,18 @@ public class TeamController {
           
     }
     
+    @RequestMapping(value = "{id}/join/{id_person}", method = RequestMethod.POST)
+    public ResponseEntity joinTeam(@PathVariable("id") long id ,@PathVariable("id_person") long id_person){
+        
+        Person p = this.repository.findByIdPerson(id_person);
+        Team t = this.teamRepository.findByIdTeam(id);
+        
+        t.getMembers().add(p);
+        
+        return new ResponseEntity(this.teamRepository.save(t));
+        
+    }
+    
     
     
     

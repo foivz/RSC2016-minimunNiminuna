@@ -42,8 +42,7 @@ public class Quiz {
     String beginTime;
     @Column(name="end_time")
     String endTime;
-    @Column(name="all_answers")
-    String allAnswers;
+    
     
     
     
@@ -52,7 +51,7 @@ public class Quiz {
     
     @ManyToOne
     @JoinColumn(name="id_person")
-    Person cretaor;
+    Person creator;
     
     
     
@@ -95,22 +94,17 @@ public class Quiz {
         return name;
     }
 
-    public Person getCretaor() {
-        return cretaor;
+    public Person getCreator() {
+        return creator;
     }
 
-    public void setCretaor(Person cretaor) {
-        this.cretaor = cretaor;
+    public void setCreator(Person creator) {
+        this.creator = creator;
     }
+
+   
     
 
-    public String getAllAnswers() {
-        return allAnswers;
-    }
-
-    public void setAllAnswers(String allAnswers) {
-        this.allAnswers = allAnswers;
-    }
 
     public List<Team> getTeams() {
         return teams;
