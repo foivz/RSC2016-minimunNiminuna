@@ -63,6 +63,13 @@ public class Quiz {
 					nullable = false, updatable = false) })
     List<Question> questions;
     
+    @ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "team_has_quiz",  joinColumns = { 
+			@JoinColumn(name = "id_quiz", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_team", 
+					nullable = false, updatable = false) })
+    List<Team> teams;
+    
     @ManyToOne
     @JoinColumn(name="id_category")
     Category category;

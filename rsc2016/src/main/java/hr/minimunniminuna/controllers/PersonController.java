@@ -4,21 +4,15 @@
  * and open the template in the editor.
  */
 package hr.minimunniminuna.controllers;
-import com.notnoop.apns.APNS;
-import com.notnoop.apns.ApnsService;
 import hr.minimunniminuna.model.Credentials;
 import hr.minimunniminuna.model.Person;
 import hr.minimunniminuna.repositories.PersonRepository;
 import java.io.IOException;
 
-import java.util.HashSet;
 import java.util.List;
 import org.jboss.logging.Logger.Level;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
