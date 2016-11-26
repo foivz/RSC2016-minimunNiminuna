@@ -9,7 +9,9 @@ import com.ibm.watson.developer_cloud.http.HttpMediaType;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
+import hr.minimunniminuna.configurations.Multimedia;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,8 +32,10 @@ public class SpeechController {
         
         SpeechToText service = new SpeechToText();
         service.setUsernameAndPassword("257413c5-7f5d-4045-a009-a1e3e3bd89fc", "hthmwugNOrLc");
-
-        File audio = multipartToFile(file);
+        
+        System.out.println("Duzina : " + file.getBytes().length);
+        
+        File f = convert(file);
         
         RecognizeOptions options = new RecognizeOptions.Builder()
             .continuous(true)
@@ -39,7 +43,7 @@ public class SpeechController {
             .contentType(HttpMediaType.AUDIO_WAV)
             .build();
         
-        SpeechResults transcript = service.recognize(audio, options).execute();
+        SpeechResults transcript = service.recognize(f, options).execute();
         
         System.out.println(transcript);
         
@@ -48,10 +52,14 @@ public class SpeechController {
     }
     
     
-    public File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException {
-        File convFile = new File( multipart.getOriginalFilename());
-        multipart.transferTo(convFile);
-        return convFile;
-    }
+   public File convert(MultipartFile file) throws IOException
+{    
+    File convFile = new File(file.getOriginalFilename());
+    convFile.createNewFile(); 
+    FileOutputStream fos = new FileOutputStream(convFile); 
+    fos.write(file.getBytes());
+    fos.close(); 
+    return convFile;
+}
 
 }

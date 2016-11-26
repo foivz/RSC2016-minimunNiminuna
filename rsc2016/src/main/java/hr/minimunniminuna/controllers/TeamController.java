@@ -114,9 +114,13 @@ public class TeamController {
         Person p = this.repository.findByIdPerson(id_person);
         Team t = this.teamRepository.findByIdTeam(id);
         
-        t.getMembers().add(p);
+        List<Person> pers = t.getMembers();
+        pers.add(p);
+        t.setMembers(pers);
         
-        return new ResponseEntity(this.teamRepository.save(t));
+        this.teamRepository.save(t);
+        
+        return new ResponseEntity(HttpStatus.OK);
         
     }
     
