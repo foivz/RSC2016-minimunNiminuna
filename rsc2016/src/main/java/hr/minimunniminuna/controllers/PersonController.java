@@ -57,6 +57,9 @@ public class PersonController {
     public ResponseEntity<List<Person>> retrieveAll() throws IOException {
         Logger.getLogger("PersonController.java").log(Level.INFO,
                 "GET on /person -- retrieving full list of users");
+        
+        
+        
         /*
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream is = classloader.getResourceAsStream("rscCert.p12");
