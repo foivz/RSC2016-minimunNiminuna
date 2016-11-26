@@ -39,6 +39,8 @@ public class Person implements Serializable {
     @Column(name="surname")
     String surname;
     
+    @Column(name="moderator")
+    boolean isModerator;
     
     @Embedded
     Credentials credentials;
@@ -53,7 +55,8 @@ public class Person implements Serializable {
 			inverseJoinColumns = { @JoinColumn(name = "id_category", 
 					nullable = false, updatable = false) })
     private List<Category> categories;
-   
+    
+  
    
 
     public Person() {
@@ -75,6 +78,15 @@ public class Person implements Serializable {
         return idPerson;
     }
 
+    public boolean isIsModerator() {
+        return isModerator;
+    }
+
+    public void setIsModerator(boolean isModerator) {
+        this.isModerator = isModerator;
+    }
+    
+    
     public void setIdPerson(long idPerson) {
         this.idPerson = idPerson;
     }
@@ -86,6 +98,9 @@ public class Person implements Serializable {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+
+    
     
     
 

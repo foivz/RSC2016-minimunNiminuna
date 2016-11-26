@@ -26,7 +26,7 @@ public class Icon {
     @Id 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_team_icon")
-    long idPerson;
+    long idIcon;
     
     @Column(name="url")
     private String url;
@@ -36,14 +36,24 @@ public class Icon {
 
     public Icon() {
     }
-    
-    public long getIdPerson() {
-        return idPerson;
+
+    public long getIdIcon() {
+        return idIcon;
     }
 
-    public void setIdPerson(long idPerson) {
-        this.idPerson = idPerson;
+    public void setIdIcon(long idIcon) {
+        this.idIcon = idIcon;
     }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+    
+    
 
     public String getUrl() {
         return url;
