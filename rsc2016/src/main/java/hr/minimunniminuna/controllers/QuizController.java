@@ -6,8 +6,10 @@
 package hr.minimunniminuna.controllers;
 
 import hr.minimunniminuna.model.Icon;
+import hr.minimunniminuna.model.Question;
 import hr.minimunniminuna.model.Quiz;
 import hr.minimunniminuna.model.Team;
+import hr.minimunniminuna.repositories.QuestionRepository;
 import hr.minimunniminuna.repositories.QuizRepository;
 import hr.minimunniminuna.repositories.TeamRepository;
 import java.io.IOException;
@@ -33,11 +35,13 @@ public class QuizController {
     
     QuizRepository repo;
     TeamRepository teamRepo;
+    QuestionRepository questions;
     
     @Autowired
-    public QuizController(QuizRepository repo, TeamRepository teamRepo) {
+    public QuizController(QuizRepository repo, TeamRepository teamRepo, QuestionRepository questions) {
         this.repo = repo;
         this.teamRepo = teamRepo;
+        this.questions = questions;
     }
     
      @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -88,6 +92,18 @@ public class QuizController {
         quiz.getTeams().add(team);
         repo.save(quiz);
         
-         return new ResponseEntity(quiz, HttpStatus.OK);
+        return new ResponseEntity(quiz, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/{id}/join/{idquestion}", method = RequestMethod.POST)
+    public ResponseEntity<Quiz> addQuestion(@PathVariable long id, @PathVariable long idquestion, @RequestBody Quiz quiz2){
+
+        Quiz quiz = repo.findByIdQuiz(id);
+        Question question = questions.findByIdQuestion(idquestion);
+        
+        quiz.getQuestions().add(question);
+        repo.save(quiz);
+        
+        return new ResponseEntity(quiz, HttpStatus.OK);
     }
 }
