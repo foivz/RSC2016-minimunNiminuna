@@ -5,6 +5,7 @@
  */
 package hr.minimunniminuna.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Icon {
     @Column(name="url")
     private String url;
     
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "icon")
     List<Team> teams;
 

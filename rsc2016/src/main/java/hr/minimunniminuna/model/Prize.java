@@ -21,7 +21,7 @@ import javax.persistence.Table;
  * @author paz
  */
 @Entity
-@Table(name="prize")
+@Table(name="quiz_awards")
 public class Prize {
 
     @Id 

@@ -57,7 +57,7 @@ public class Quiz {
     List<Prize> prizes;
     
     @ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "quiz_has_questions",  joinColumns = { 
+	@JoinTable(name = "quiz_has_question",  joinColumns = { 
 			@JoinColumn(name = "id_quiz", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "id_question", 
 					nullable = false, updatable = false) })

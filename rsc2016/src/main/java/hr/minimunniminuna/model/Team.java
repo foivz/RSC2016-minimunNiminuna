@@ -38,8 +38,8 @@ public class Team {
     @Column(name="description")
     String description;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_team_icon", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_team_icon")
     Icon icon;
     
     
