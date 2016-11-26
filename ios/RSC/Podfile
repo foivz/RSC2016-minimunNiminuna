@@ -1,0 +1,3 @@
+target ‘RSC’
+use_frameworks!
+
