@@ -68,7 +68,7 @@
 
 	// GSAP
 	// React
-	var injectTapEventPlugin = __webpack_require__(557);
+	var injectTapEventPlugin = __webpack_require__(568);
 
 	// Material UI
 
@@ -36698,13 +36698,21 @@
 
 	var _Dashboard4 = _interopRequireDefault(_Dashboard3);
 
-	var _NewModerator = __webpack_require__(505);
+	var _Profile = __webpack_require__(507);
+
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	var _NewModerator = __webpack_require__(508);
 
 	var _NewModerator2 = _interopRequireDefault(_NewModerator);
 
-	var _NewQuiz = __webpack_require__(506);
+	var _NewQuiz = __webpack_require__(509);
 
 	var _NewQuiz2 = _interopRequireDefault(_NewQuiz);
+
+	var _Quiz = __webpack_require__(560);
+
+	var _Quiz2 = _interopRequireDefault(_Quiz);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36752,7 +36760,9 @@
 	                _react2.default.createElement(
 	                    _reactRouter.Route,
 	                    { path: '/user', component: _NavigationUser2.default },
-	                    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Dashboard4.default })
+	                    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Dashboard4.default }),
+	                    _react2.default.createElement(_reactRouter.Route, { path: '/user/profile', component: _Profile2.default }),
+	                    _react2.default.createElement(_reactRouter.Route, { path: '/quiz/:id', component: _Quiz2.default })
 	                )
 	            );
 	        }
@@ -58203,19 +58213,19 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Main = function (_React$Component) {
-	    _inherits(Main, _React$Component);
+	var DashboardModerator = function (_React$Component) {
+	    _inherits(DashboardModerator, _React$Component);
 
-	    function Main(props) {
-	        _classCallCheck(this, Main);
+	    function DashboardModerator(props) {
+	        _classCallCheck(this, DashboardModerator);
 
-	        var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (DashboardModerator.__proto__ || Object.getPrototypeOf(DashboardModerator)).call(this, props));
 
 	        _this.state = {};
 	        return _this;
 	    }
 
-	    _createClass(Main, [{
+	    _createClass(DashboardModerator, [{
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -58325,10 +58335,10 @@
 	        }
 	    }]);
 
-	    return Main;
+	    return DashboardModerator;
 	}(_react2.default.Component);
 
-	exports.default = Main;
+	exports.default = DashboardModerator;
 	;
 
 /***/ },
@@ -59858,6 +59868,10 @@
 
 	var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
+	var _appService = __webpack_require__(505);
+
+	var _reactRouter = __webpack_require__(326);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -59874,117 +59888,124 @@
 
 	        var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
-	        _this.state = {};
+	        _this.state = {
+	            loading: true
+	        };
 	        return _this;
 	    }
 
 	    _createClass(Main, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            (0, _appService.fetchQuizes)(function (res) {
+	                _this2.setState({
+	                    quizes: res,
+	                    loading: false
+	                });
+	                _this2.initMap(res);
+	            });
+
+	            // this.initSpeechRecognition();
+	        }
+	    }, {
+	        key: 'initMap',
+	        value: function initMap(quizes) {
+	            var position = { lat: 46.308483, lng: 16.340031 };
+	            var map = new google.maps.Map(document.getElementById('map'), {
+	                zoom: 17,
+	                center: position
+	            });
+	            for (var key in quizes) {
+	                new google.maps.Marker({
+	                    position: quizes[key].location,
+	                    map: map
+	                });
+	            }
+	        }
+	    }, {
+	        key: 'enterQuiz',
+	        value: function enterQuiz(id) {
+	            _reactRouter.hashHistory.push('/quiz/' + id);
+	        }
+	    }, {
+	        key: 'renderQuizes',
+	        value: function renderQuizes() {
+	            return this.state.quizes.map(function (elem, key) {
+	                var _this3 = this;
+
+	                console.log(elem);
+	                return _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { className: 'col-md-4', key: key },
 	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-4' },
+	                        _Card.Card,
+	                        null,
+	                        _react2.default.createElement(_Card.CardHeader, {
+	                            title: 'Author - Jennifer Lensey',
+	                            subtitle: 'Biology Quiz',
+	                            avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
+	                        }),
 	                        _react2.default.createElement(
-	                            _Card.Card,
-	                            null,
-	                            _react2.default.createElement(_Card.CardHeader, {
-	                                title: 'Moderator - Jennifer Lensey',
-	                                subtitle: 'Biology Quiz',
-	                                avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
-	                            }),
-	                            _react2.default.createElement(
-	                                _Card.CardMedia,
-	                                {
-	                                    overlay: _react2.default.createElement(_Card.CardTitle, { title: 'Biology Quiz', subtitle: 'For sixth grade' })
-	                                },
-	                                _react2.default.createElement('img', { src: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg' })
-	                            ),
-	                            _react2.default.createElement(_Card.CardTitle, { title: 'Quiz', subtitle: 'Enter code: 45323' }),
-	                            _react2.default.createElement(
-	                                _Card.CardText,
-	                                null,
-	                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.'
-	                            ),
-	                            _react2.default.createElement(
-	                                _Card.CardActions,
-	                                null,
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Enter Quiz' })
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-4' },
+	                            _Card.CardMedia,
+	                            {
+	                                overlay: _react2.default.createElement(_Card.CardTitle, { title: elem.name, subtitle: 'For sixth grade' })
+	                            },
+	                            _react2.default.createElement('img', { src: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg' })
+	                        ),
+	                        _react2.default.createElement(_Card.CardTitle, { title: 'QUIZ', subtitle: elem.beginDate + ' - ' + elem.endDate }),
 	                        _react2.default.createElement(
-	                            _Card.Card,
+	                            _Card.CardText,
 	                            null,
-	                            _react2.default.createElement(_Card.CardHeader, {
-	                                title: 'Moderator - Jennifer Lensey',
-	                                subtitle: 'Biology Quiz',
-	                                avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
-	                            }),
-	                            _react2.default.createElement(
-	                                _Card.CardMedia,
-	                                {
-	                                    overlay: _react2.default.createElement(_Card.CardTitle, { title: 'Biology Quiz', subtitle: 'For sixth grade' })
-	                                },
-	                                _react2.default.createElement('img', { src: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg' })
-	                            ),
-	                            _react2.default.createElement(_Card.CardTitle, { title: 'Quiz', subtitle: 'Enter code: 45323' }),
-	                            _react2.default.createElement(
-	                                _Card.CardText,
-	                                null,
-	                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.'
-	                            ),
-	                            _react2.default.createElement(
-	                                _Card.CardActions,
-	                                null,
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Enter Quiz' })
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-4' },
+	                            'How much do you know about the countries of the world? Find out with this 10 question quiz.'
+	                        ),
 	                        _react2.default.createElement(
-	                            _Card.Card,
+	                            _Card.CardActions,
 	                            null,
-	                            _react2.default.createElement(_Card.CardHeader, {
-	                                title: 'Moderator - Jennifer Lensey',
-	                                subtitle: 'Biology Quiz',
-	                                avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
-	                            }),
-	                            _react2.default.createElement(
-	                                _Card.CardMedia,
-	                                {
-	                                    overlay: _react2.default.createElement(_Card.CardTitle, { title: 'Biology Quiz', subtitle: 'For sixth grade' })
-	                                },
-	                                _react2.default.createElement('img', { src: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg' })
-	                            ),
-	                            _react2.default.createElement(_Card.CardTitle, { title: 'Quiz', subtitle: 'Enter code: 45323' }),
-	                            _react2.default.createElement(
-	                                _Card.CardText,
-	                                null,
-	                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.'
-	                            ),
-	                            _react2.default.createElement(
-	                                _Card.CardActions,
-	                                null,
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Enter Quiz' })
-	                            )
+	                            _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
+	                            _react2.default.createElement(_FlatButton2.default, { label: 'Enter Quiz', onClick: function onClick() {
+	                                    return _this3.enterQuiz(elem.idQuiz);
+	                                } })
 	                        )
 	                    )
-	                )
-	            );
+	                );
+	            }, this);
+	        }
+	    }, {
+	        key: 'initSpeechRecognition',
+	        value: function initSpeechRecognition() {
+	            var commandHello = {
+	                indexes: ["*"], // These spoken words will trigger the execution of the command
+	                action: function action(i, wildcard) {
+	                    // Action to be executed when a index match with spoken word
+	                    console.log(wildcard);
+	                }
+	            };
+	            artyom.addCommands(commandHello);
+
+	            artyom.initialize({
+	                lang: "en-GB",
+	                debug: true, // Show what recognizes in the Console
+	                listen: true, // Start listening after this
+	                speed: 0.9, // Talk a little bit slow
+	                mode: "normal" // This parameter is not required as it will be normal by default
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            if (!this.state.loading) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'container' },
+	                    this.renderQuizes(),
+	                    _react2.default.createElement('div', { id: 'map' })
+	                );
+	            }
+
+	            return _react2.default.createElement('div', null);
 	        }
 	    }]);
 
@@ -59996,6 +60017,132 @@
 
 /***/ },
 /* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.fetchQuizes = fetchQuizes;
+	exports.fetchQuizByID = fetchQuizByID;
+	exports.sendAudio = sendAudio;
+
+	var _APIService = __webpack_require__(506);
+
+	function fetchQuizes(success) {
+	    var url = '/quiz/';
+	    (0, _APIService.send)('GET', url, undefined, undefined, function (res) {
+	        return success(res);
+	    });
+	}
+
+	function fetchQuizByID(quizID, success) {
+	    var url = '/quiz/' + quizID;
+	    (0, _APIService.send)('GET', url, undefined, undefined, function (res) {
+	        return success(res);
+	    });
+	}
+
+	function sendAudio(audio, success) {
+	    var url = '/speech';
+	    (0, _APIService.send)('GET', url, undefined, undefined, function (res) {
+	        return success(res);
+	    });
+	}
+
+/***/ },
+/* 506 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.send = send;
+	var API = 'http://139.59.158.214:8080';
+
+	function send(method, endpoint, data, headers, success, error) {
+	    var url = '' + API + endpoint;
+	    data = JSON.stringify(data);
+
+	    var options = {};
+
+	    options.method = method;
+	    if (data != undefined && data != null) options.body = data;
+	    if (headers != undefined && headers != null) options.headers = headers;
+
+	    fetch(url, options).then(function (res) {
+	        if (res.status >= 200 && res.status < 300) return res;else {
+	            var _error = new Error(res.statusText);
+	            _error.res = res;
+	            throw _error;
+	        }
+	    }).then(function (res) {
+	        return res.json();
+	    }).then(success).catch(error);
+	}
+
+/***/ },
+/* 507 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Profile = function (_React$Component) {
+	    _inherits(Profile, _React$Component);
+
+	    function Profile(props) {
+	        _classCallCheck(this, Profile);
+
+	        var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
+
+	        _this.state = {};
+	        return _this;
+	    }
+
+	    _createClass(Profile, [{
+	        key: "render",
+	        value: function render() {
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "container" },
+	                _react2.default.createElement(
+	                    "h1",
+	                    null,
+	                    "Profile"
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Profile;
+	}(_react2.default.Component);
+
+	exports.default = Profile;
+	;
+
+/***/ },
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -60048,7 +60195,7 @@
 	exports.default = AddModerator;
 
 /***/ },
-/* 506 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60075,7 +60222,7 @@
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
-	var _SelectField = __webpack_require__(507);
+	var _SelectField = __webpack_require__(510);
 
 	var _SelectField2 = _interopRequireDefault(_SelectField);
 
@@ -60083,17 +60230,17 @@
 
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
-	var _DatePicker = __webpack_require__(515);
+	var _DatePicker = __webpack_require__(518);
 
 	var _DatePicker2 = _interopRequireDefault(_DatePicker);
 
-	var _TimePicker = __webpack_require__(530);
+	var _TimePicker = __webpack_require__(533);
 
 	var _TimePicker2 = _interopRequireDefault(_TimePicker);
 
-	var _Stepper = __webpack_require__(547);
+	var _Stepper = __webpack_require__(550);
 
-	var _ExpandTransition = __webpack_require__(553);
+	var _ExpandTransition = __webpack_require__(556);
 
 	var _ExpandTransition2 = _interopRequireDefault(_ExpandTransition);
 
@@ -60336,7 +60483,7 @@
 	exports.default = AddQuiz;
 
 /***/ },
-/* 507 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60346,7 +60493,7 @@
 	});
 	exports.default = undefined;
 
-	var _SelectField = __webpack_require__(508);
+	var _SelectField = __webpack_require__(511);
 
 	var _SelectField2 = _interopRequireDefault(_SelectField);
 
@@ -60355,7 +60502,7 @@
 	exports.default = _SelectField2.default;
 
 /***/ },
-/* 508 */
+/* 511 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -60404,7 +60551,7 @@
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
-	var _DropDownMenu = __webpack_require__(509);
+	var _DropDownMenu = __webpack_require__(512);
 
 	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
 
@@ -60628,7 +60775,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 509 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60638,7 +60785,7 @@
 	});
 	exports.default = exports.MenuItem = exports.DropDownMenu = undefined;
 
-	var _DropDownMenu2 = __webpack_require__(510);
+	var _DropDownMenu2 = __webpack_require__(513);
 
 	var _DropDownMenu3 = _interopRequireDefault(_DropDownMenu2);
 
@@ -60653,7 +60800,7 @@
 	exports.default = _DropDownMenu3.default;
 
 /***/ },
-/* 510 */
+/* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -60702,7 +60849,7 @@
 
 	var _transitions2 = _interopRequireDefault(_transitions);
 
-	var _arrowDropDown = __webpack_require__(511);
+	var _arrowDropDown = __webpack_require__(514);
 
 	var _arrowDropDown2 = _interopRequireDefault(_arrowDropDown);
 
@@ -60710,7 +60857,7 @@
 
 	var _Menu2 = _interopRequireDefault(_Menu);
 
-	var _ClearFix = __webpack_require__(512);
+	var _ClearFix = __webpack_require__(515);
 
 	var _ClearFix2 = _interopRequireDefault(_ClearFix);
 
@@ -60718,7 +60865,7 @@
 
 	var _Popover2 = _interopRequireDefault(_Popover);
 
-	var _PopoverAnimationVertical = __webpack_require__(514);
+	var _PopoverAnimationVertical = __webpack_require__(517);
 
 	var _PopoverAnimationVertical2 = _interopRequireDefault(_PopoverAnimationVertical);
 
@@ -61073,7 +61220,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 511 */
+/* 514 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61110,7 +61257,7 @@
 	exports.default = NavigationArrowDropDown;
 
 /***/ },
-/* 512 */
+/* 515 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -61131,7 +61278,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _BeforeAfterWrapper = __webpack_require__(513);
+	var _BeforeAfterWrapper = __webpack_require__(516);
 
 	var _BeforeAfterWrapper2 = _interopRequireDefault(_BeforeAfterWrapper);
 
@@ -61178,7 +61325,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 513 */
+/* 516 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -61334,7 +61481,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 514 */
+/* 517 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -61483,7 +61630,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 515 */
+/* 518 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61493,7 +61640,7 @@
 	});
 	exports.default = undefined;
 
-	var _DatePicker = __webpack_require__(516);
+	var _DatePicker = __webpack_require__(519);
 
 	var _DatePicker2 = _interopRequireDefault(_DatePicker);
 
@@ -61502,7 +61649,7 @@
 	exports.default = _DatePicker2.default;
 
 /***/ },
-/* 516 */
+/* 519 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -61547,9 +61694,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _dateUtils = __webpack_require__(517);
+	var _dateUtils = __webpack_require__(520);
 
-	var _DatePickerDialog = __webpack_require__(518);
+	var _DatePickerDialog = __webpack_require__(521);
 
 	var _DatePickerDialog2 = _interopRequireDefault(_DatePickerDialog);
 
@@ -61896,7 +62043,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 517 */
+/* 520 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -62082,7 +62229,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 518 */
+/* 521 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -62135,7 +62282,7 @@
 
 	var _keycode2 = _interopRequireDefault(_keycode);
 
-	var _Calendar = __webpack_require__(519);
+	var _Calendar = __webpack_require__(522);
 
 	var _Calendar2 = _interopRequireDefault(_Calendar);
 
@@ -62147,11 +62294,11 @@
 
 	var _Popover2 = _interopRequireDefault(_Popover);
 
-	var _PopoverAnimationVertical = __webpack_require__(514);
+	var _PopoverAnimationVertical = __webpack_require__(517);
 
 	var _PopoverAnimationVertical2 = _interopRequireDefault(_PopoverAnimationVertical);
 
-	var _dateUtils = __webpack_require__(517);
+	var _dateUtils = __webpack_require__(520);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62334,7 +62481,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 519 */
+/* 522 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -62383,31 +62530,31 @@
 
 	var _transitions2 = _interopRequireDefault(_transitions);
 
-	var _CalendarActionButtons = __webpack_require__(520);
+	var _CalendarActionButtons = __webpack_require__(523);
 
 	var _CalendarActionButtons2 = _interopRequireDefault(_CalendarActionButtons);
 
-	var _CalendarMonth = __webpack_require__(521);
+	var _CalendarMonth = __webpack_require__(524);
 
 	var _CalendarMonth2 = _interopRequireDefault(_CalendarMonth);
 
-	var _CalendarYear = __webpack_require__(523);
+	var _CalendarYear = __webpack_require__(526);
 
 	var _CalendarYear2 = _interopRequireDefault(_CalendarYear);
 
-	var _CalendarToolbar = __webpack_require__(525);
+	var _CalendarToolbar = __webpack_require__(528);
 
 	var _CalendarToolbar2 = _interopRequireDefault(_CalendarToolbar);
 
-	var _DateDisplay = __webpack_require__(529);
+	var _DateDisplay = __webpack_require__(532);
 
 	var _DateDisplay2 = _interopRequireDefault(_DateDisplay);
 
-	var _SlideIn = __webpack_require__(527);
+	var _SlideIn = __webpack_require__(530);
 
 	var _SlideIn2 = _interopRequireDefault(_SlideIn);
 
-	var _dateUtils = __webpack_require__(517);
+	var _dateUtils = __webpack_require__(520);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62787,7 +62934,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 520 */
+/* 523 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -62893,7 +63040,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 521 */
+/* 524 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -62926,9 +63073,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _dateUtils = __webpack_require__(517);
+	var _dateUtils = __webpack_require__(520);
 
-	var _DayButton = __webpack_require__(522);
+	var _DayButton = __webpack_require__(525);
 
 	var _DayButton2 = _interopRequireDefault(_DayButton);
 
@@ -63065,7 +63212,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 522 */
+/* 525 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -63110,7 +63257,7 @@
 
 	var _transitions2 = _interopRequireDefault(_transitions);
 
-	var _dateUtils = __webpack_require__(517);
+	var _dateUtils = __webpack_require__(520);
 
 	var _EnhancedButton = __webpack_require__(394);
 
@@ -63266,7 +63413,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 523 */
+/* 526 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -63307,11 +63454,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _YearButton = __webpack_require__(524);
+	var _YearButton = __webpack_require__(527);
 
 	var _YearButton2 = _interopRequireDefault(_YearButton);
 
-	var _dateUtils = __webpack_require__(517);
+	var _dateUtils = __webpack_require__(520);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -63461,7 +63608,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 524 */
+/* 527 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -63621,7 +63768,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 525 */
+/* 528 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -63658,7 +63805,7 @@
 
 	var _IconButton2 = _interopRequireDefault(_IconButton);
 
-	var _chevronLeft = __webpack_require__(526);
+	var _chevronLeft = __webpack_require__(529);
 
 	var _chevronLeft2 = _interopRequireDefault(_chevronLeft);
 
@@ -63666,7 +63813,7 @@
 
 	var _chevronRight2 = _interopRequireDefault(_chevronRight);
 
-	var _SlideIn = __webpack_require__(527);
+	var _SlideIn = __webpack_require__(530);
 
 	var _SlideIn2 = _interopRequireDefault(_SlideIn);
 
@@ -63795,7 +63942,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 526 */
+/* 529 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63832,7 +63979,7 @@
 	exports.default = NavigationChevronLeft;
 
 /***/ },
-/* 527 */
+/* 530 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -63881,7 +64028,7 @@
 
 	var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
 
-	var _SlideInChild = __webpack_require__(528);
+	var _SlideInChild = __webpack_require__(531);
 
 	var _SlideInChild2 = _interopRequireDefault(_SlideInChild);
 
@@ -63972,7 +64119,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 528 */
+/* 531 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64126,7 +64273,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 529 */
+/* 532 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64171,7 +64318,7 @@
 
 	var _transitions2 = _interopRequireDefault(_transitions);
 
-	var _SlideIn = __webpack_require__(527);
+	var _SlideIn = __webpack_require__(530);
 
 	var _SlideIn2 = _interopRequireDefault(_SlideIn);
 
@@ -64369,7 +64516,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 530 */
+/* 533 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64379,7 +64526,7 @@
 	});
 	exports.default = undefined;
 
-	var _TimePicker = __webpack_require__(531);
+	var _TimePicker = __webpack_require__(534);
 
 	var _TimePicker2 = _interopRequireDefault(_TimePicker);
 
@@ -64388,7 +64535,7 @@
 	exports.default = _TimePicker2.default;
 
 /***/ },
-/* 531 */
+/* 534 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64433,7 +64580,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TimePickerDialog = __webpack_require__(532);
+	var _TimePickerDialog = __webpack_require__(535);
 
 	var _TimePickerDialog2 = _interopRequireDefault(_TimePickerDialog);
 
@@ -64441,7 +64588,7 @@
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
-	var _timeUtils = __webpack_require__(544);
+	var _timeUtils = __webpack_require__(547);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64687,7 +64834,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 532 */
+/* 535 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64740,7 +64887,7 @@
 
 	var _keycode2 = _interopRequireDefault(_keycode);
 
-	var _Clock = __webpack_require__(533);
+	var _Clock = __webpack_require__(536);
 
 	var _Clock2 = _interopRequireDefault(_Clock);
 
@@ -64896,7 +65043,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 533 */
+/* 536 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64929,15 +65076,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TimeDisplay = __webpack_require__(534);
+	var _TimeDisplay = __webpack_require__(537);
 
 	var _TimeDisplay2 = _interopRequireDefault(_TimeDisplay);
 
-	var _ClockHours = __webpack_require__(542);
+	var _ClockHours = __webpack_require__(545);
 
 	var _ClockHours2 = _interopRequireDefault(_ClockHours);
 
-	var _ClockMinutes = __webpack_require__(546);
+	var _ClockMinutes = __webpack_require__(549);
 
 	var _ClockMinutes2 = _interopRequireDefault(_ClockMinutes);
 
@@ -65136,7 +65283,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 534 */
+/* 537 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -65149,7 +65296,7 @@
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
-	var _slicedToArray2 = __webpack_require__(535);
+	var _slicedToArray2 = __webpack_require__(538);
 
 	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -65385,18 +65532,18 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 535 */
+/* 538 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _isIterable2 = __webpack_require__(536);
+	var _isIterable2 = __webpack_require__(539);
 
 	var _isIterable3 = _interopRequireDefault(_isIterable2);
 
-	var _getIterator2 = __webpack_require__(539);
+	var _getIterator2 = __webpack_require__(542);
 
 	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
@@ -65441,34 +65588,6 @@
 	}();
 
 /***/ },
-/* 536 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(537), __esModule: true };
-
-/***/ },
-/* 537 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(238);
-	__webpack_require__(216);
-	module.exports = __webpack_require__(538);
-
-/***/ },
-/* 538 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var classof   = __webpack_require__(276)
-	  , ITERATOR  = __webpack_require__(237)('iterator')
-	  , Iterators = __webpack_require__(222);
-	module.exports = __webpack_require__(194).isIterable = function(it){
-	  var O = Object(it);
-	  return O[ITERATOR] !== undefined
-	    || '@@iterator' in O
-	    || Iterators.hasOwnProperty(classof(O));
-	};
-
-/***/ },
 /* 539 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -65486,6 +65605,34 @@
 /* 541 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var classof   = __webpack_require__(276)
+	  , ITERATOR  = __webpack_require__(237)('iterator')
+	  , Iterators = __webpack_require__(222);
+	module.exports = __webpack_require__(194).isIterable = function(it){
+	  var O = Object(it);
+	  return O[ITERATOR] !== undefined
+	    || '@@iterator' in O
+	    || Iterators.hasOwnProperty(classof(O));
+	};
+
+/***/ },
+/* 542 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(543), __esModule: true };
+
+/***/ },
+/* 543 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(238);
+	__webpack_require__(216);
+	module.exports = __webpack_require__(544);
+
+/***/ },
+/* 544 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var anObject = __webpack_require__(199)
 	  , get      = __webpack_require__(275);
 	module.exports = __webpack_require__(194).getIterator = function(it){
@@ -65495,7 +65642,7 @@
 	};
 
 /***/ },
-/* 542 */
+/* 545 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -65532,15 +65679,15 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _ClockNumber = __webpack_require__(543);
+	var _ClockNumber = __webpack_require__(546);
 
 	var _ClockNumber2 = _interopRequireDefault(_ClockNumber);
 
-	var _ClockPointer = __webpack_require__(545);
+	var _ClockPointer = __webpack_require__(548);
 
 	var _ClockPointer2 = _interopRequireDefault(_ClockPointer);
 
-	var _timeUtils = __webpack_require__(544);
+	var _timeUtils = __webpack_require__(547);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -65739,7 +65886,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 543 */
+/* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -65768,7 +65915,7 @@
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
-	var _slicedToArray2 = __webpack_require__(535);
+	var _slicedToArray2 = __webpack_require__(538);
 
 	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -65776,7 +65923,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _timeUtils = __webpack_require__(544);
+	var _timeUtils = __webpack_require__(547);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -65883,7 +66030,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 544 */
+/* 547 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65983,7 +66130,7 @@
 	}
 
 /***/ },
-/* 545 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66016,7 +66163,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _timeUtils = __webpack_require__(544);
+	var _timeUtils = __webpack_require__(547);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66135,7 +66282,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 546 */
+/* 549 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66168,15 +66315,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ClockNumber = __webpack_require__(543);
+	var _ClockNumber = __webpack_require__(546);
 
 	var _ClockNumber2 = _interopRequireDefault(_ClockNumber);
 
-	var _ClockPointer = __webpack_require__(545);
+	var _ClockPointer = __webpack_require__(548);
 
 	var _ClockPointer2 = _interopRequireDefault(_ClockPointer);
 
-	var _timeUtils = __webpack_require__(544);
+	var _timeUtils = __webpack_require__(547);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66352,7 +66499,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 547 */
+/* 550 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66362,23 +66509,23 @@
 	});
 	exports.Stepper = exports.StepLabel = exports.StepContent = exports.StepButton = exports.Step = undefined;
 
-	var _Step2 = __webpack_require__(548);
+	var _Step2 = __webpack_require__(551);
 
 	var _Step3 = _interopRequireDefault(_Step2);
 
-	var _StepButton2 = __webpack_require__(549);
+	var _StepButton2 = __webpack_require__(552);
 
 	var _StepButton3 = _interopRequireDefault(_StepButton2);
 
-	var _StepContent2 = __webpack_require__(552);
+	var _StepContent2 = __webpack_require__(555);
 
 	var _StepContent3 = _interopRequireDefault(_StepContent2);
 
-	var _StepLabel2 = __webpack_require__(550);
+	var _StepLabel2 = __webpack_require__(553);
 
 	var _StepLabel3 = _interopRequireDefault(_StepLabel2);
 
-	var _Stepper2 = __webpack_require__(555);
+	var _Stepper2 = __webpack_require__(558);
 
 	var _Stepper3 = _interopRequireDefault(_Stepper2);
 
@@ -66391,7 +66538,7 @@
 	exports.Stepper = _Stepper3.default;
 
 /***/ },
-/* 548 */
+/* 551 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66555,7 +66702,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 549 */
+/* 552 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66608,7 +66755,7 @@
 
 	var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
 
-	var _StepLabel = __webpack_require__(550);
+	var _StepLabel = __webpack_require__(553);
 
 	var _StepLabel2 = _interopRequireDefault(_StepLabel);
 
@@ -66774,7 +66921,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 550 */
+/* 553 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66823,7 +66970,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _checkCircle = __webpack_require__(551);
+	var _checkCircle = __webpack_require__(554);
 
 	var _checkCircle2 = _interopRequireDefault(_checkCircle);
 
@@ -67005,7 +67152,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 551 */
+/* 554 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67042,7 +67189,7 @@
 	exports.default = ActionCheckCircle;
 
 /***/ },
-/* 552 */
+/* 555 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67087,7 +67234,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ExpandTransition = __webpack_require__(553);
+	var _ExpandTransition = __webpack_require__(556);
 
 	var _ExpandTransition2 = _interopRequireDefault(_ExpandTransition);
 
@@ -67212,7 +67359,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 553 */
+/* 556 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67261,7 +67408,7 @@
 
 	var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
 
-	var _ExpandTransitionChild = __webpack_require__(554);
+	var _ExpandTransitionChild = __webpack_require__(557);
 
 	var _ExpandTransitionChild2 = _interopRequireDefault(_ExpandTransitionChild);
 
@@ -67355,7 +67502,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 554 */
+/* 557 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67552,7 +67699,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 555 */
+/* 558 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67589,7 +67736,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _StepConnector = __webpack_require__(556);
+	var _StepConnector = __webpack_require__(559);
 
 	var _StepConnector2 = _interopRequireDefault(_StepConnector);
 
@@ -67703,7 +67850,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 556 */
+/* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67782,11 +67929,1107 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 557 */
+/* 560 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _appService = __webpack_require__(505);
+
+	var _RadioButton = __webpack_require__(561);
+
+	var _reactAudioRecorder = __webpack_require__(566);
+
+	var _reactAudioRecorder2 = _interopRequireDefault(_reactAudioRecorder);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Quiz = function (_React$Component) {
+	    _inherits(Quiz, _React$Component);
+
+	    function Quiz(props) {
+	        _classCallCheck(this, Quiz);
+
+	        var _this = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props));
+
+	        _this.state = {
+	            loading: true
+	        };
+	        return _this;
+	    }
+
+	    _createClass(Quiz, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var _this2 = this;
+
+	            var quizID = this.props.params.id;
+	            (0, _appService.fetchQuizByID)(quizID, function (res) {
+	                _this2.setState({
+	                    loading: false,
+	                    quiz: res
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'renderQuestion',
+	        value: function renderQuestion(index) {
+	            var questions = this.state.quiz.questions;
+	            console.log(questions);
+	            switch (questions[0].cat.idCat) {
+	                case 1:
+	                    console.log("textbox");
+	                    break;
+	                case 2:
+	                    console.log("checkbox");
+	                    this.renderCheckbox();
+	                    break;
+	            }
+	        }
+	    }, {
+	        key: 'renderCheckbox',
+	        value: function renderCheckbox(answers) {
+	            return _react2.default.createElement(_RadioButton.RadioButton, {
+	                value: 'light',
+	                label: 'Simple'
+	            });
+	        }
+	    }, {
+	        key: 'audioChange',
+	        value: function audioChange(data) {
+	            console.log(data);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            if (!this.state.loading) return _react2.default.createElement(
+	                'div',
+	                { className: 'container' },
+	                this.renderQuestion(0),
+	                _react2.default.createElement(_reactAudioRecorder2.default, { onChange: this.audioChange })
+	            );
+
+	            return _react2.default.createElement('div', null);
+	        }
+	    }]);
+
+	    return Quiz;
+	}(_react2.default.Component);
+
+	exports.default = Quiz;
+	;
+
+/***/ },
+/* 561 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = exports.RadioButtonGroup = exports.RadioButton = undefined;
+
+	var _RadioButton2 = __webpack_require__(562);
+
+	var _RadioButton3 = _interopRequireDefault(_RadioButton2);
+
+	var _RadioButtonGroup2 = __webpack_require__(565);
+
+	var _RadioButtonGroup3 = _interopRequireDefault(_RadioButtonGroup2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.RadioButton = _RadioButton3.default;
+	exports.RadioButtonGroup = _RadioButtonGroup3.default;
+	exports.default = _RadioButton3.default;
+
+/***/ },
+/* 562 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends2 = __webpack_require__(383);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _objectWithoutProperties2 = __webpack_require__(388);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _getPrototypeOf = __webpack_require__(181);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(207);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(208);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(212);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(259);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _simpleAssign = __webpack_require__(389);
+
+	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _transitions = __webpack_require__(390);
+
+	var _transitions2 = _interopRequireDefault(_transitions);
+
+	var _EnhancedSwitch = __webpack_require__(439);
+
+	var _EnhancedSwitch2 = _interopRequireDefault(_EnhancedSwitch);
+
+	var _radioButtonUnchecked = __webpack_require__(563);
+
+	var _radioButtonUnchecked2 = _interopRequireDefault(_radioButtonUnchecked);
+
+	var _radioButtonChecked = __webpack_require__(564);
+
+	var _radioButtonChecked2 = _interopRequireDefault(_radioButtonChecked);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function getStyles(props, context) {
+	  var radioButton = context.muiTheme.radioButton;
+
+
+	  return {
+	    icon: {
+	      height: radioButton.size,
+	      width: radioButton.size
+	    },
+	    target: {
+	      transition: _transitions2.default.easeOut(),
+	      position: 'absolute',
+	      opacity: 1,
+	      transform: 'scale(1)',
+	      fill: radioButton.borderColor
+	    },
+	    fill: {
+	      position: 'absolute',
+	      opacity: 1,
+	      transform: 'scale(0)',
+	      transformOrigin: '50% 50%',
+	      transition: _transitions2.default.easeOut(),
+	      fill: radioButton.checkedColor
+	    },
+	    targetWhenChecked: {
+	      opacity: 0,
+	      transform: 'scale(0)'
+	    },
+	    fillWhenChecked: {
+	      opacity: 1,
+	      transform: 'scale(1)'
+	    },
+	    targetWhenDisabled: {
+	      fill: radioButton.disabledColor
+	    },
+	    fillWhenDisabled: {
+	      fill: radioButton.disabledColor
+	    },
+	    label: {
+	      color: props.disabled ? radioButton.labelDisabledColor : radioButton.labelColor
+	    },
+	    ripple: {
+	      color: props.checked ? radioButton.checkedColor : radioButton.borderColor
+	    }
+	  };
+	}
+
+	var RadioButton = function (_Component) {
+	  (0, _inherits3.default)(RadioButton, _Component);
+
+	  function RadioButton() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    (0, _classCallCheck3.default)(this, RadioButton);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = RadioButton.__proto__ || (0, _getPrototypeOf2.default)(RadioButton)).call.apply(_ref, [this].concat(args))), _this), _this.handleSwitch = function (event) {
+	      if (_this.props.onCheck) {
+	        _this.props.onCheck(event, _this.props.value);
+	      }
+	    }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+	  }
+
+	  // Only called when selected, not when unselected.
+
+
+	  (0, _createClass3.default)(RadioButton, [{
+	    key: 'isChecked',
+	    value: function isChecked() {
+	      return this.refs.enhancedSwitch.isSwitched();
+	    }
+
+	    // Use RadioButtonGroup.setSelectedValue(newSelectionValue) to set a
+	    // RadioButton's checked value.
+
+	  }, {
+	    key: 'setChecked',
+	    value: function setChecked(newCheckedValue) {
+	      this.refs.enhancedSwitch.setSwitched(newCheckedValue);
+	    }
+	  }, {
+	    key: 'getValue',
+	    value: function getValue() {
+	      return this.refs.enhancedSwitch.getValue();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          checkedIcon = _props.checkedIcon,
+	          checked = _props.checked,
+	          iconStyle = _props.iconStyle,
+	          labelStyle = _props.labelStyle,
+	          labelPosition = _props.labelPosition,
+	          onCheck = _props.onCheck,
+	          uncheckedIcon = _props.uncheckedIcon,
+	          disabled = _props.disabled,
+	          other = (0, _objectWithoutProperties3.default)(_props, ['checkedIcon', 'checked', 'iconStyle', 'labelStyle', 'labelPosition', 'onCheck', 'uncheckedIcon', 'disabled']);
+
+
+	      var styles = getStyles(this.props, this.context);
+
+	      var uncheckedStyles = (0, _simpleAssign2.default)(styles.target, checked && styles.targetWhenChecked, iconStyle, disabled && styles.targetWhenDisabled);
+
+	      var checkedStyles = (0, _simpleAssign2.default)(styles.fill, checked && styles.fillWhenChecked, iconStyle, disabled && styles.fillWhenDisabled);
+
+	      var uncheckedElement = _react2.default.isValidElement(uncheckedIcon) ? _react2.default.cloneElement(uncheckedIcon, {
+	        style: (0, _simpleAssign2.default)(uncheckedStyles, uncheckedIcon.props.style)
+	      }) : _react2.default.createElement(_radioButtonUnchecked2.default, { style: uncheckedStyles });
+
+	      var checkedElement = _react2.default.isValidElement(checkedIcon) ? _react2.default.cloneElement(checkedIcon, {
+	        style: (0, _simpleAssign2.default)(checkedStyles, checkedIcon.props.style)
+	      }) : _react2.default.createElement(_radioButtonChecked2.default, { style: checkedStyles });
+
+	      var mergedIconStyle = (0, _simpleAssign2.default)(styles.icon, iconStyle);
+	      var mergedLabelStyle = (0, _simpleAssign2.default)(styles.label, labelStyle);
+
+	      return _react2.default.createElement(_EnhancedSwitch2.default, (0, _extends3.default)({}, other, {
+	        ref: 'enhancedSwitch',
+	        inputType: 'radio',
+	        checked: checked,
+	        switched: checked,
+	        disabled: disabled,
+	        rippleColor: styles.ripple.color,
+	        iconStyle: mergedIconStyle,
+	        labelStyle: mergedLabelStyle,
+	        labelPosition: labelPosition,
+	        onSwitch: this.handleSwitch,
+	        switchElement: _react2.default.createElement(
+	          'div',
+	          null,
+	          uncheckedElement,
+	          checkedElement
+	        )
+	      }));
+	    }
+	  }]);
+	  return RadioButton;
+	}(_react.Component);
+
+	RadioButton.defaultProps = {
+	  checked: false,
+	  disabled: false,
+	  labelPosition: 'right'
+	};
+	RadioButton.contextTypes = {
+	  muiTheme: _react.PropTypes.object.isRequired
+	};
+	process.env.NODE_ENV !== "production" ? RadioButton.propTypes = {
+	  /**
+	   * @ignore
+	   * checked if true
+	   * Used internally by `RadioButtonGroup`.
+	   */
+	  checked: _react.PropTypes.bool,
+	  /**
+	   * The icon element to show when the radio button is checked.
+	   */
+	  checkedIcon: _react.PropTypes.element,
+	  /**
+	   * If true, the radio button is disabled.
+	   */
+	  disabled: _react.PropTypes.bool,
+	  /**
+	   * Override the inline-styles of the icon element.
+	   */
+	  iconStyle: _react.PropTypes.object,
+	  /**
+	   * Override the inline-styles of the input element.
+	   */
+	  inputStyle: _react.PropTypes.object,
+	  /**
+	   * @ignore
+	   * Used internally by `RadioButtonGroup`. Use the `labelPosition` property of `RadioButtonGroup` instead.
+	   * Where the label will be placed next to the radio button.
+	   */
+	  labelPosition: _react.PropTypes.oneOf(['left', 'right']),
+	  /**
+	   * Override the inline-styles of the label element.
+	   */
+	  labelStyle: _react.PropTypes.object,
+	  /**
+	   * @ignore
+	   * Callback function fired when the radio button is checked. Note that this
+	   * function will not be called if the radio button is part of a
+	   * radio button group: in this case, use the `onChange` property of
+	   * `RadioButtonGroup`.
+	   *
+	   * @param {object} event `change` event targeting the element.
+	   * @param {string} value The element's `value`.
+	   */
+	  onCheck: _react.PropTypes.func,
+	  /**
+	   * Override the inline-styles of the root element.
+	   */
+	  style: _react.PropTypes.object,
+	  /**
+	   * The icon element to show when the radio button is unchecked.
+	   */
+	  uncheckedIcon: _react.PropTypes.element,
+	  /**
+	   * The value of the radio button.
+	   */
+	  value: _react.PropTypes.any
+	} : void 0;
+	exports.default = RadioButton;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ },
+/* 563 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _pure = __webpack_require__(441);
+
+	var _pure2 = _interopRequireDefault(_pure);
+
+	var _SvgIcon = __webpack_require__(450);
+
+	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ToggleRadioButtonUnchecked = function ToggleRadioButtonUnchecked(props) {
+	  return _react2.default.createElement(
+	    _SvgIcon2.default,
+	    props,
+	    _react2.default.createElement('path', { d: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z' })
+	  );
+	};
+	ToggleRadioButtonUnchecked = (0, _pure2.default)(ToggleRadioButtonUnchecked);
+	ToggleRadioButtonUnchecked.displayName = 'ToggleRadioButtonUnchecked';
+	ToggleRadioButtonUnchecked.muiName = 'SvgIcon';
+
+	exports.default = ToggleRadioButtonUnchecked;
+
+/***/ },
+/* 564 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _pure = __webpack_require__(441);
+
+	var _pure2 = _interopRequireDefault(_pure);
+
+	var _SvgIcon = __webpack_require__(450);
+
+	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ToggleRadioButtonChecked = function ToggleRadioButtonChecked(props) {
+	  return _react2.default.createElement(
+	    _SvgIcon2.default,
+	    props,
+	    _react2.default.createElement('path', { d: 'M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z' })
+	  );
+	};
+	ToggleRadioButtonChecked = (0, _pure2.default)(ToggleRadioButtonChecked);
+	ToggleRadioButtonChecked.displayName = 'ToggleRadioButtonChecked';
+	ToggleRadioButtonChecked.muiName = 'SvgIcon';
+
+	exports.default = ToggleRadioButtonChecked;
+
+/***/ },
+/* 565 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends2 = __webpack_require__(383);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _objectWithoutProperties2 = __webpack_require__(388);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _getPrototypeOf = __webpack_require__(181);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(207);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(208);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(212);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(259);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _simpleAssign = __webpack_require__(389);
+
+	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _RadioButton = __webpack_require__(561);
+
+	var _RadioButton2 = _interopRequireDefault(_RadioButton);
+
+	var _warning = __webpack_require__(317);
+
+	var _warning2 = _interopRequireDefault(_warning);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var RadioButtonGroup = function (_Component) {
+	  (0, _inherits3.default)(RadioButtonGroup, _Component);
+
+	  function RadioButtonGroup() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    (0, _classCallCheck3.default)(this, RadioButtonGroup);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = RadioButtonGroup.__proto__ || (0, _getPrototypeOf2.default)(RadioButtonGroup)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	      numberCheckedRadioButtons: 0,
+	      selected: ''
+	    }, _this.handleChange = function (event, newSelection) {
+	      _this.updateRadioButtons(newSelection);
+
+	      // Successful update
+	      if (_this.state.numberCheckedRadioButtons === 0) {
+	        if (_this.props.onChange) _this.props.onChange(event, newSelection);
+	      }
+	    }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+	  }
+
+	  (0, _createClass3.default)(RadioButtonGroup, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      var cnt = 0;
+	      var selected = '';
+	      var _props = this.props,
+	          valueSelected = _props.valueSelected,
+	          defaultSelected = _props.defaultSelected;
+
+	      if (valueSelected !== undefined) {
+	        selected = valueSelected;
+	      } else if (defaultSelected !== undefined) {
+	        selected = defaultSelected;
+	      }
+
+	      _react2.default.Children.forEach(this.props.children, function (option) {
+	        if (_this2.hasCheckAttribute(option)) cnt++;
+	      }, this);
+
+	      this.setState({
+	        numberCheckedRadioButtons: cnt,
+	        selected: selected
+	      });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.hasOwnProperty('valueSelected')) {
+	        this.setState({
+	          selected: nextProps.valueSelected
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'hasCheckAttribute',
+	    value: function hasCheckAttribute(radioButton) {
+	      return radioButton.props.hasOwnProperty('checked') && radioButton.props.checked;
+	    }
+	  }, {
+	    key: 'updateRadioButtons',
+	    value: function updateRadioButtons(newSelection) {
+	      if (this.state.numberCheckedRadioButtons === 0) {
+	        this.setState({ selected: newSelection });
+	      } else {
+	        process.env.NODE_ENV !== "production" ? (0, _warning2.default)(false, 'Material-UI: Cannot select a different radio button while another radio button\n        has the \'checked\' property set to true.') : void 0;
+	      }
+	    }
+	  }, {
+	    key: 'getSelectedValue',
+	    value: function getSelectedValue() {
+	      return this.state.selected;
+	    }
+	  }, {
+	    key: 'setSelectedValue',
+	    value: function setSelectedValue(newSelectionValue) {
+	      this.updateRadioButtons(newSelectionValue);
+	    }
+	  }, {
+	    key: 'clearValue',
+	    value: function clearValue() {
+	      this.setSelectedValue('');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      var prepareStyles = this.context.muiTheme.prepareStyles;
+
+
+	      var options = _react2.default.Children.map(this.props.children, function (option) {
+	        var _option$props = option.props,
+	            name = _option$props.name,
+	            value = _option$props.value,
+	            label = _option$props.label,
+	            onCheck = _option$props.onCheck,
+	            other = (0, _objectWithoutProperties3.default)(_option$props, ['name', 'value', 'label', 'onCheck']);
+
+
+	        return _react2.default.createElement(_RadioButton2.default, (0, _extends3.default)({}, other, {
+	          ref: option.props.value,
+	          name: _this3.props.name,
+	          key: option.props.value,
+	          value: option.props.value,
+	          label: option.props.label,
+	          labelPosition: _this3.props.labelPosition,
+	          onCheck: _this3.handleChange,
+	          checked: option.props.value === _this3.state.selected
+	        }));
+	      }, this);
+
+	      return _react2.default.createElement(
+	        'div',
+	        {
+	          style: prepareStyles((0, _simpleAssign2.default)({}, this.props.style)),
+	          className: this.props.className
+	        },
+	        options
+	      );
+	    }
+	  }]);
+	  return RadioButtonGroup;
+	}(_react.Component);
+
+	RadioButtonGroup.defaultProps = {
+	  style: {}
+	};
+	RadioButtonGroup.contextTypes = {
+	  muiTheme: _react.PropTypes.object.isRequired
+	};
+	process.env.NODE_ENV !== "production" ? RadioButtonGroup.propTypes = {
+	  /**
+	   * Should be used to pass `RadioButton` components.
+	   */
+	  children: _react.PropTypes.node,
+	  /**
+	   * The CSS class name of the root element.
+	   */
+	  className: _react.PropTypes.string,
+	  /**
+	   * The `value` property of the radio button that will be
+	   * selected by default. This takes precedence over the `checked` property
+	   * of the `RadioButton` elements.
+	   */
+	  defaultSelected: _react.PropTypes.any,
+	  /**
+	   * Where the label will be placed for all child radio buttons.
+	   * This takes precedence over the `labelPosition` property of the
+	   * `RadioButton` elements.
+	   */
+	  labelPosition: _react.PropTypes.oneOf(['left', 'right']),
+	  /**
+	   * The name that will be applied to all child radio buttons.
+	   */
+	  name: _react.PropTypes.string.isRequired,
+	  /**
+	   * Callback function that is fired when a radio button has
+	   * been checked.
+	   *
+	   * @param {object} event `change` event targeting the selected
+	   * radio button.
+	   * @param {*} value The `value` of the selected radio button.
+	   */
+	  onChange: _react.PropTypes.func,
+	  /**
+	   * Override the inline-styles of the root element.
+	   */
+	  style: _react.PropTypes.object,
+	  /**
+	   * The `value` of the currently selected radio button.
+	   */
+	  valueSelected: _react.PropTypes.any
+	} : void 0;
+	exports.default = RadioButtonGroup;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ },
+/* 566 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _wavEncoderJs = __webpack_require__(567);
+
+	var _wavEncoderJs2 = _interopRequireDefault(_wavEncoderJs);
+
+	var AudioRecorder = (function (_Component) {
+	  _inherits(AudioRecorder, _Component);
+
+	  function AudioRecorder(props) {
+	    _classCallCheck(this, AudioRecorder);
+
+	    _get(Object.getPrototypeOf(AudioRecorder.prototype), 'constructor', this).call(this, props);
+
+	    this.buffers = [[], []];
+	    this.bufferLength = 0;
+	    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+	    this.sampleRate = this.audioContext.sampleRate;
+	    this.recordingStream = null;
+	    this.playbackSource = null;
+
+	    this.state = {
+	      recording: false,
+	      playing: false,
+	      audio: props.audio
+	    };
+	  }
+
+	  _createClass(AudioRecorder, [{
+	    key: 'startRecording',
+	    value: function startRecording() {
+	      var _this = this;
+
+	      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+	      navigator.getUserMedia({ audio: true }, function (stream) {
+	        var gain = _this.audioContext.createGain();
+	        var audioSource = _this.audioContext.createMediaStreamSource(stream);
+	        audioSource.connect(gain);
+
+	        var bufferSize = 2048;
+	        var recorder = _this.audioContext.createScriptProcessor(bufferSize, 2, 2);
+	        recorder.onaudioprocess = function (event) {
+	          // save left and right buffers
+	          for (var i = 0; i < 2; i++) {
+	            var channel = event.inputBuffer.getChannelData(i);
+	            _this.buffers[i].push(new Float32Array(channel));
+	            _this.bufferLength += bufferSize;
+	          }
+	        };
+
+	        gain.connect(recorder);
+	        recorder.connect(_this.audioContext.destination);
+	        _this.recordingStream = stream;
+	      }, function (err) {});
+
+	      this.setState({
+	        recording: true
+	      });
+	      if (this.props.onRecordStart) {
+	        this.props.onRecordStart.call();
+	      }
+	    }
+	  }, {
+	    key: 'stopRecording',
+	    value: function stopRecording() {
+	      this.recordingStream.getTracks()[0].stop();
+
+	      var audioData = (0, _wavEncoderJs2['default'])(this.buffers, this.bufferLength, this.sampleRate);
+
+	      this.setState({
+	        recording: false,
+	        audio: audioData
+	      });
+
+	      if (this.props.onChange) {
+	        this.props.onChange.call(null, {
+	          duration: this.bufferLength / this.sampleRate,
+	          blob: audioData
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'startPlayback',
+	    value: function startPlayback() {
+	      var _this2 = this;
+
+	      var reader = new window.FileReader();
+	      reader.readAsArrayBuffer(this.state.audio);
+	      reader.onloadend = function () {
+	        _this2.audioContext.decodeAudioData(reader.result, function (buffer) {
+	          var source = _this2.audioContext.createBufferSource();
+	          source.buffer = buffer;
+	          source.connect(_this2.audioContext.destination);
+	          source.loop = _this2.props.loop;
+	          source.start(0);
+	          source.onended = _this2.onAudioEnded.bind(_this2);
+
+	          _this2.playbackSource = source;
+	        });
+
+	        _this2.setState({
+	          playing: true
+	        });
+
+	        if (_this2.props.onPlay) {
+	          _this2.props.onPlay.call();
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'stopPlayback',
+	    value: function stopPlayback(event) {
+	      if (this.state.playing) {
+	        event.preventDefault();
+
+	        this.setState({
+	          playing: false
+	        });
+
+	        if (this.props.onAbort) {
+	          this.props.onAbort.call();
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'removeAudio',
+	    value: function removeAudio() {
+	      if (this.state.audio) {
+	        if (this.playbackSource) {
+	          this.playbackSource.stop();
+	          delete this.playbackSource;
+	        }
+
+	        this.setState({
+	          audio: null
+	        });
+
+	        if (this.props.onChange) {
+	          this.props.onChange.call();
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'downloadAudio',
+	    value: function downloadAudio() {
+	      var url = (window.URL || window.webkitURL).createObjectURL(this.state.audio);
+	      var link = document.createElement('a');
+	      link.href = url;
+	      link.download = 'output.wav';
+	      var click = document.createEvent('Event');
+	      click.initEvent('click', true, true);
+	      link.dispatchEvent(click);
+	    }
+	  }, {
+	    key: 'onAudioEnded',
+	    value: function onAudioEnded() {
+	      if (this.state.playing) {
+	        this.setState({ playing: false });
+	      }
+
+	      if (this.props.onEnded) {
+	        this.props.onEnded.call();
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (this.state.audio && nextProps.audio !== this.state.audio) {
+	        this.stopPlayback();
+	        this.setState({
+	          audio: nextProps.audio
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var strings = this.props.strings;
+
+	      var buttonText = undefined,
+	          buttonClass = ['AudioRecorder-button'],
+	          audioButtons = undefined;
+	      var clickHandler = undefined;
+	      if (this.state.audio) {
+	        buttonClass.push('hasAudio');
+
+	        if (this.state.playing) {
+	          buttonClass.push('isPlaying');
+	          buttonText = strings.playing;
+	          clickHandler = this.stopPlayback;
+	        } else {
+	          buttonText = strings.play;
+	          clickHandler = this.startPlayback;
+	        }
+
+	        audioButtons = [_react2['default'].createElement(
+	          'button',
+	          { key: 'remove', className: 'AudioRecorder-remove', onClick: this.removeAudio.bind(this) },
+	          strings.remove
+	        )];
+
+	        if (this.props.download) {
+	          audioButtons.push(_react2['default'].createElement(
+	            'button',
+	            { key: 'download', className: 'AudioRecorder-download', onClick: this.downloadAudio.bind(this) },
+	            strings.download
+	          ));
+	        }
+	      } else {
+	        if (this.state.recording) {
+	          buttonClass.push('isRecording');
+	          buttonText = strings.recording;
+	          clickHandler = this.stopRecording;
+	        } else {
+	          buttonText = strings.record;
+	          clickHandler = this.startRecording;
+	        }
+	      }
+
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: 'AudioRecorder' },
+	        _react2['default'].createElement(
+	          'button',
+	          {
+	            className: buttonClass.join(' '),
+	            onClick: clickHandler && clickHandler.bind(this)
+	          },
+	          buttonText
+	        ),
+	        audioButtons
+	      );
+	    }
+	  }]);
+
+	  return AudioRecorder;
+	})(_react.Component);
+
+	AudioRecorder.propTypes = {
+	  audio: _react.PropTypes.instanceOf(Blob),
+	  download: _react.PropTypes.bool,
+	  loop: _react.PropTypes.bool,
+
+	  onAbort: _react.PropTypes.func,
+	  onChange: _react.PropTypes.func,
+	  onEnded: _react.PropTypes.func,
+	  onPlay: _react.PropTypes.func,
+	  onRecordStart: _react.PropTypes.func,
+
+	  strings: _react2['default'].PropTypes.shape({
+	    play: _react.PropTypes.string,
+	    playing: _react.PropTypes.string,
+	    record: _react.PropTypes.string,
+	    recording: _react.PropTypes.string,
+	    remove: _react.PropTypes.string,
+	    download: _react.PropTypes.string
+	  })
+	};
+
+	AudioRecorder.defaultProps = {
+	  download: true,
+	  loop: false,
+
+	  strings: {
+	    play: '🔊 Play',
+	    playing: '❚❚ Playing',
+	    record: '● Record',
+	    recording: '● Recording',
+	    remove: '✖ Remove',
+	    download: '💾 Save' // unicode floppy disk
+	  }
+	};
+
+	exports['default'] = AudioRecorder;
+	module.exports = exports['default'];
+
+/***/ },
+/* 567 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = encodeWAV;
+	function writeUTFBytes(dataview, offset, string) {
+	  for (var i = 0; i < string.length; i++) {
+	    dataview.setUint8(offset + i, string.charCodeAt(i));
+	  }
+	}
+
+	function mergeBuffers(buffer, length) {
+	  var result = new Float64Array(length);
+	  var offset = 0;
+	  for (var i = 0; i < buffer.length; i++) {
+	    var inner = buffer[i];
+	    result.set(inner, offset);
+	    offset += inner.length;
+	  }
+	  return result;
+	}
+
+	function interleave(left, right) {
+	  var length = left.length + right.length;
+	  var result = new Float64Array(length);
+	  var inputIndex = 0;
+	  for (var i = 0; i < length;) {
+	    result[i++] = left[inputIndex];
+	    result[i++] = right[inputIndex];
+	    inputIndex++;
+	  }
+	  return result;
+	}
+
+	function encodeWAV(buffers, bufferLength, sampleRate) {
+	  var volume = arguments.length <= 3 || arguments[3] === undefined ? 1 : arguments[3];
+
+	  var left = mergeBuffers(buffers[0], bufferLength);
+	  var right = mergeBuffers(buffers[1], bufferLength);
+	  var interleaved = interleave(left, right);
+	  var buffer = new ArrayBuffer(44 + interleaved.length * 2);
+	  var view = new DataView(buffer);
+
+	  writeUTFBytes(view, 0, 'RIFF');
+	  view.setUint32(4, 44 + interleaved.length * 2, true);
+	  writeUTFBytes(view, 8, 'WAVE');
+
+	  writeUTFBytes(view, 12, 'fmt ');
+	  view.setUint32(16, 16, true);
+	  view.setUint16(20, 1, true);
+	  view.setUint16(22, 2, true);
+	  view.setUint32(24, sampleRate, true);
+	  view.setUint32(28, sampleRate * 4, true);
+	  view.setUint16(32, 4, true);
+	  view.setUint16(34, 16, true);
+
+	  writeUTFBytes(view, 36, 'data');
+	  view.setUint32(40, interleaved.length * 2, true);
+
+	  interleaved.forEach(function (sample, index) {
+	    view.setInt16(44 + index * 2, sample * (0x7fff * volume), true);
+	  });
+
+	  var audioData = new Blob([view], { type: 'audio/wav' });
+	  return audioData;
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 568 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(7);
-	var defaultClickRejectionStrategy = __webpack_require__(558);
+	var defaultClickRejectionStrategy = __webpack_require__(569);
 
 	var alreadyInjected = false;
 
@@ -67808,14 +69051,14 @@
 	  alreadyInjected = true;
 
 	  __webpack_require__(13).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(559)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(570)(shouldRejectClick)
 	  });
 	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 558 */
+/* 569 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -67826,7 +69069,7 @@
 
 
 /***/ },
-/* 559 */
+/* 570 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -67854,10 +69097,10 @@
 	var EventPluginUtils = __webpack_require__(15);
 	var EventPropagators = __webpack_require__(12);
 	var SyntheticUIEvent = __webpack_require__(52);
-	var TouchEventUtils = __webpack_require__(560);
+	var TouchEventUtils = __webpack_require__(571);
 	var ViewportMetrics = __webpack_require__(53);
 
-	var keyOf = __webpack_require__(561);
+	var keyOf = __webpack_require__(572);
 	var topLevelTypes = EventConstants.topLevelTypes;
 
 	var isStartish = EventPluginUtils.isStartish;
@@ -68003,7 +69246,7 @@
 
 
 /***/ },
-/* 560 */
+/* 571 */
 /***/ function(module, exports) {
 
 	/**
@@ -68051,7 +69294,7 @@
 
 
 /***/ },
-/* 561 */
+/* 572 */
 /***/ function(module, exports) {
 
 	"use strict";

@@ -18,8 +18,10 @@ import NavigationUser from './components/user/NavigationUser.jsx';
 // Components
 import DashboardModerator from './components/moderator/Dashboard.jsx';
 import DashboardUser from './components/user/Dashboard.jsx';
+import Profile from './components/user/Profile.jsx';
 import AddModerator from './components/moderator/New-moderator.jsx';
 import AddQuiz from './components/moderator/New-quiz.jsx';
+import Quiz from './components/user/Quiz.jsx';
 
 export default class Routes extends React.Component {
     constructor(props) {
@@ -38,6 +40,8 @@ export default class Routes extends React.Component {
                 </Route>
                 <Route path="/user" component={NavigationUser}>
                     <IndexRoute component={DashboardUser}/>
+                    <Route path="/user/profile" component={Profile}/>
+                    <Route path="/quiz/:id" component={Quiz}/>
                 </Route>
             </Router>
         );

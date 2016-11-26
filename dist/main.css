@@ -1158,3 +1158,10 @@ label.label-copyright {
   z-index: -100;
   transform: translateX(-50%) translateY(-50%);
   background-size: cover; }
+
+#map {
+  padding: 50px 0;
+  margin-bottom: 50px;
+  height: 500px;
+  display: block;
+  clear: both; }
