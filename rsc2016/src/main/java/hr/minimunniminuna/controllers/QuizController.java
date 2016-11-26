@@ -9,6 +9,7 @@ import hr.minimunniminuna.model.Icon;
 import hr.minimunniminuna.model.Quiz;
 import hr.minimunniminuna.model.Team;
 import hr.minimunniminuna.repositories.QuizRepository;
+import hr.minimunniminuna.repositories.TeamRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,10 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuizController {
     
     QuizRepository repo;
+    TeamRepository teamRepo;
     
     @Autowired
-    public QuizController(QuizRepository repo) {
+    public QuizController(QuizRepository repo, TeamRepository teamRepo) {
         this.repo = repo;
+        this.teamRepo = teamRepo;
     }
     
      @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -76,5 +79,15 @@ public class QuizController {
           
     }
 
-    
+    @RequestMapping(value = "/{id}/join/{idteam}", method = RequestMethod.POST)
+    public ResponseEntity<Quiz> joinQuiz(@PathVariable long id, @PathVariable long idteam, @RequestBody Quiz quiz2){
+
+        Quiz quiz = repo.findByIdQuiz(id);
+        Team team = teamRepo.findByIdTeam(idteam);
+        
+        quiz.getTeams().add(team);
+        repo.save(quiz);
+        
+         return new ResponseEntity(quiz, HttpStatus.OK);
+    }
 }
