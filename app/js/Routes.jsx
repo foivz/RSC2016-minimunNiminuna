@@ -8,14 +8,16 @@ import {
     IndexRoute
 } from 'react-router';
 
-// Pages
-import Main from './pages/Main.jsx';
+
 import Landing from './pages/Landing.jsx';
 
 // Navigation
-import Navigation from './components/navigation/Navigation.jsx';
+import Navigation from './components/navigation/NavigationModerator.jsx';
 
-import Component from './components/Component.jsx';
+// Components
+import Dashboard from './components/moderator/Dashboard.jsx';
+import AddModerator from './components/moderator/New-moderator.jsx';
+import AddQuiz from './components/moderator/New-quiz.jsx';
 
 export default class Routes extends React.Component {
     constructor(props) {
@@ -27,9 +29,10 @@ export default class Routes extends React.Component {
         return(
             <Router history={hashHistory}>
                 <Route path="/" component={Landing} />
-                <Route path="/app" component={Navigation}>
-                    <IndexRoute component={Main}/>
-                    <Route path="/app/about" component={Component}/>
+                <Route path="/moderator" component={Navigation}>
+                    <IndexRoute component={Dashboard}/>
+                    <Route path="/moderator/new-moderator" component={AddModerator}/>
+                    <Route path="/moderator/new-quiz" component={AddQuiz}/>
                 </Route>
             </Router>
         );

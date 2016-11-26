@@ -11,6 +11,8 @@ import Divider from 'material-ui/Divider';
 // Icons
 import IconHome from 'material-ui/svg-icons/action/home';
 import IconPowerOff from 'material-ui/svg-icons/action/power-settings-new';
+import IconModerator from 'material-ui/svg-icons/social/person-add';
+import IconQuiz from 'material-ui/svg-icons/action/lightbulb-outline';
 
 export default class Navigation extends React.Component {
     constructor(props) {
@@ -73,22 +75,23 @@ export default class Navigation extends React.Component {
                     
                     <img className="drawer-image" src="static/imgs/drawer.jpg" style={style.drawerImg} alt="Drawer"/>
 
-                    <NavLink to="/app">
+                    <NavLink to="/moderator">
                         <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconHome/>}>
-                            Home
-                        </MenuItem>
-                    </NavLink>
-
-                    <NavLink to="/app/about">
-                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconHome/>}>
-                            About
+                            Dashboard
                         </MenuItem>
                     </NavLink>
 
                     <Divider/>
-                    <NavLink to="/app/about">
-                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconHome/>}>
-                            Contact
+
+                    <NavLink to="/moderator/new-quiz">
+                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconQuiz/>}>
+                            Add Quiz
+                        </MenuItem>
+                    </NavLink>
+
+                    <NavLink to="/moderator/new-moderator">
+                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconModerator/>}>
+                            Add Moderator
                         </MenuItem>
                     </NavLink>
 

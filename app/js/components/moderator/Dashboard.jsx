@@ -8,7 +8,7 @@ export default class Main extends React.Component {
     render() {
         return(
             <div className="container">
-                <h1>Moderator home page</h1>
+                <h1>Dashboard</h1>
             </div>
         );
     }
