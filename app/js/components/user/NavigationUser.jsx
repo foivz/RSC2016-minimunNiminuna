@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from './NavLink.jsx';
+import NavLink from '../common/NavLink.jsx';
 import { RouteTransition } from 'react-router-transition';
 
 // Material UI
@@ -11,8 +11,7 @@ import Divider from 'material-ui/Divider';
 // Icons
 import IconHome from 'material-ui/svg-icons/action/home';
 import IconPowerOff from 'material-ui/svg-icons/action/power-settings-new';
-import IconModerator from 'material-ui/svg-icons/social/person-add';
-import IconQuiz from 'material-ui/svg-icons/action/lightbulb-outline';
+import IconProfile from 'material-ui/svg-icons/action/perm-identity';
 
 export default class Navigation extends React.Component {
     constructor(props) {
@@ -21,7 +20,7 @@ export default class Navigation extends React.Component {
             drawerOpen: false
         };
     }
-    
+
     handleDrawerClose() {
         this.setState({drawerOpen: false});
     };
@@ -41,7 +40,7 @@ export default class Navigation extends React.Component {
     render() {
 
         const drawerWidth = 300;
-        
+
         const style = {
             drawerImg: {
                 width: drawerWidth + 'px',
@@ -53,12 +52,12 @@ export default class Navigation extends React.Component {
                 bottom: '15px'
             }
         };
-        
+
         return(
             <div>
-                
+
                 <div className="overlay"></div>
-                
+
                 <AppBar
                     title="App name"
                     className="mainAppBar"
@@ -72,10 +71,10 @@ export default class Navigation extends React.Component {
                     open={this.state.drawerOpen}
                     onRequestChange={(drawerOpen) => this.setState({drawerOpen})}
                 >
-                    
+
                     <img className="drawer-image" src="static/imgs/drawer.jpg" style={style.drawerImg} alt="Drawer"/>
 
-                    <NavLink to="/moderator">
+                    <NavLink to="/user">
                         <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconHome/>}>
                             Dashboard
                         </MenuItem>
@@ -83,15 +82,9 @@ export default class Navigation extends React.Component {
 
                     <Divider/>
 
-                    <NavLink to="/moderator/new-quiz">
-                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconQuiz/>}>
-                            Add Quiz
-                        </MenuItem>
-                    </NavLink>
-
-                    <NavLink to="/moderator/new-moderator">
-                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconModerator/>}>
-                            Add Moderator
+                    <NavLink to="/user/profile">
+                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconProfile/>}>
+                            Profile
                         </MenuItem>
                     </NavLink>
 

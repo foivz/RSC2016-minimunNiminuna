@@ -44,11 +44,17 @@ export default class Landing extends React.Component {
     }
 
     userLoginAndRedirect() {
+        var username = this.state.username;
         TweenMax.to('.overlay--hidden', 2, {
             bottom: 0,
             opacity: 1,
             delay: 0.5,
-            onComplete: () => hashHistory.push('/moderator')
+            onComplete: () => {
+                if (username === 'm')
+                    hashHistory.push('/moderator');
+                else if (username === "u")
+                    hashHistory.push('/user');
+            }
         });
     }
 

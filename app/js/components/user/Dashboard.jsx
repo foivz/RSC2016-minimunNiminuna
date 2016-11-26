@@ -31,7 +31,7 @@ export default class Main extends React.Component {
                             </CardText>
                             <CardActions>
                                 <FlatButton label="Statistics" />
-                                <FlatButton label="Edit" />
+                                <FlatButton label="Enter Quiz" />
                             </CardActions>
                         </Card>
                     </div>
@@ -55,7 +55,7 @@ export default class Main extends React.Component {
                             </CardText>
                             <CardActions>
                                 <FlatButton label="Statistics" />
-                                <FlatButton label="Edit" />
+                                <FlatButton label="Enter Quiz" />
                             </CardActions>
                         </Card>
                     </div>
@@ -79,7 +79,7 @@ export default class Main extends React.Component {
                             </CardText>
                             <CardActions>
                                 <FlatButton label="Statistics" />
-                                <FlatButton label="Edit" />
+                                <FlatButton label="Enter Quiz" />
                             </CardActions>
                         </Card>
                     </div>
