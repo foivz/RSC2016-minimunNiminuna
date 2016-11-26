@@ -1,3 +1,39 @@
-PODFILE CHECKSUM: 34e71b23c9846a908d5bedcac5b351cbae92c334
+PODS:
+  - Alamofire (4.2.0)
+  - IQKeyboardManagerSwift (4.0.6)
+  - Spring (1.0.3)
+  - SVProgressHUD (2.0.4)
+  - Unbox (2.2.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.0)
+  - IQKeyboardManagerSwift (= 4.0.6)
+  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
+  - SVProgressHUD (from `https://github.com/SVProgressHUD/SVProgressHUD.git`)
+  - Unbox
+
+EXTERNAL SOURCES:
+  Spring:
+    :branch: swift3
+    :git: https://github.com/MengTo/Spring.git
+  SVProgressHUD:
+    :git: https://github.com/SVProgressHUD/SVProgressHUD.git
+
+CHECKOUT OPTIONS:
+  Spring:
+    :commit: 3a9227c6e9157e7b47f5ac1ee5abab2a56b50002
+    :git: https://github.com/MengTo/Spring.git
+  SVProgressHUD:
+    :commit: 78fd5de1b65855269a5332e87626c9f7b4b11c7f
+    :git: https://github.com/SVProgressHUD/SVProgressHUD.git
+
+SPEC CHECKSUMS:
+  Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  IQKeyboardManagerSwift: b3015e819559ca76381f87a0833f44d178564603
+  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
+  SVProgressHUD: bfde85ed6c573ea802b9cb37894ed9b629034f1b
+  Unbox: 03d7128ce429987986bc08d967e9d5e0da158946
+
+PODFILE CHECKSUM: e3debfd94970c2340e094a2c4ae53a7908e48ef9
 
 COCOAPODS: 1.2.0.beta.1

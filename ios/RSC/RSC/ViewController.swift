@@ -8,11 +8,10 @@
 
 import UIKit
 import UserNotifications
-class ViewController: UIViewController, UNUserNotificationCenterDelegate {
+class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
                 super.viewDidLoad()
-            
         }
     
 }

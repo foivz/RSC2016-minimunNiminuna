@@ -1,3 +1,9 @@
-target ‘RSC’
-use_frameworks!
+target ‘RSC’ do
+	use_frameworks!
 
+	pod 'Alamofire', '~> 4.0'
+	pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+	pod 'IQKeyboardManagerSwift', '4.0.6'
+	pod 'Unbox'
+	pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
+end
