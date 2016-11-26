@@ -6,9 +6,11 @@
 package hr.minimunniminuna.controllers;
 
 import hr.minimunniminuna.model.Icon;
+import hr.minimunniminuna.model.Prize;
 import hr.minimunniminuna.model.Question;
 import hr.minimunniminuna.model.Quiz;
 import hr.minimunniminuna.model.Team;
+import hr.minimunniminuna.repositories.PrizeRepository;
 import hr.minimunniminuna.repositories.QuestionRepository;
 import hr.minimunniminuna.repositories.QuizRepository;
 import hr.minimunniminuna.repositories.TeamRepository;
@@ -36,12 +38,15 @@ public class QuizController {
     QuizRepository repo;
     TeamRepository teamRepo;
     QuestionRepository questions;
+    PrizeRepository prizes;
     
     @Autowired
-    public QuizController(QuizRepository repo, TeamRepository teamRepo, QuestionRepository questions) {
+    public QuizController(QuizRepository repo, TeamRepository teamRepo, 
+            QuestionRepository questions, PrizeRepository prizes) {
         this.repo = repo;
         this.teamRepo = teamRepo;
         this.questions = questions;
+        this.prizes = prizes;
     }
     
      @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -95,13 +100,25 @@ public class QuizController {
         return new ResponseEntity(quiz, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/{id}/join/{idquestion}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/add/{idquestion}", method = RequestMethod.POST)
     public ResponseEntity<Quiz> addQuestion(@PathVariable long id, @PathVariable long idquestion, @RequestBody Quiz quiz2){
 
         Quiz quiz = repo.findByIdQuiz(id);
         Question question = questions.findByIdQuestion(idquestion);
         
         quiz.getQuestions().add(question);
+        repo.save(quiz);
+        
+        return new ResponseEntity(quiz, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/{id}/add/{idaward}", method = RequestMethod.POST)
+    public ResponseEntity<Quiz> addReqards(@PathVariable long id, @PathVariable long idaward, @RequestBody Quiz quiz2){
+
+        Quiz quiz = repo.findByIdQuiz(id);
+        Prize prize = prizes.findByIdPrize(idaward);
+        
+        quiz.getPrizes().add(prize);
         repo.save(quiz);
         
         return new ResponseEntity(quiz, HttpStatus.OK);
