@@ -9,6 +9,9 @@ import com.ibm.watson.developer_cloud.http.HttpMediaType;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
+import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
+import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyImagesOptions;
+import com.ibm.watson.developer_cloud.visual_recognition.v3.model.VisualClassification;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,6 +50,24 @@ public class SpeechController {
         System.out.println(transcript);
         
         return transcript.toString();
+    
+    }
+    
+    @RequestMapping(value = "/img", method = RequestMethod.POST)
+    public String getPicClasses(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException{
+        
+        VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
+        service.setApiKey("a9c987abccb0abb8d53e49ba5e0b3cc7a856b2a8");
+        File f = convert(file);
+        System.out.println("Classify an image");
+        ClassifyImagesOptions options = new ClassifyImagesOptions.Builder()
+        .images(f)
+        .build();
+        
+        VisualClassification result = service.classify(options).execute();
+        System.out.println(result);
+        
+        return result.toString();
     
     }
     
