@@ -100,7 +100,7 @@ public class QuizController {
         return new ResponseEntity(quiz, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/{id}/add/{idquestion}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/addQuestion/{idquestion}", method = RequestMethod.POST)
     public ResponseEntity<Quiz> addQuestion(@PathVariable long id, @PathVariable long idquestion){
 
         Quiz quiz = repo.findByIdQuiz(id);
@@ -112,7 +112,7 @@ public class QuizController {
         return new ResponseEntity(quiz, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/{id}/add/{idaward}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/addReward/{idaward}", method = RequestMethod.POST)
     public ResponseEntity<Quiz> addReqards(@PathVariable long id, @PathVariable long idaward){
 
         Quiz quiz = repo.findByIdQuiz(id);
