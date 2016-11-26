@@ -11,7 +11,14 @@ export function fetchQuizByID(quizID, success) {
 }
 
 export function sendAudio(audio, success) {
-    var url = '/speech';
-    send('GET', url, undefined, undefined, (res) => success(res));
+    var url = '/speech/';
+    var fd = new FormData();
+    var headers = {
+        'Content-type': 'octet-stream'
+    };
+
+    fd.append('file', audio);
+
+    send('POST', url, fd, headers, (res) => success(res), (err) => console.log(err));
 }
 

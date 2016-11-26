@@ -60045,9 +60045,18 @@
 	}
 
 	function sendAudio(audio, success) {
-	    var url = '/speech';
-	    (0, _APIService.send)('GET', url, undefined, undefined, function (res) {
+	    var url = '/speech/';
+	    var fd = new FormData();
+	    var headers = {
+	        'Content-type': 'octet-stream'
+	    };
+
+	    fd.append('file', audio);
+
+	    (0, _APIService.send)('POST', url, fd, headers, function (res) {
 	        return success(res);
+	    }, function (err) {
+	        return console.log(err);
 	    });
 	}
 
@@ -67946,11 +67955,19 @@
 
 	var _appService = __webpack_require__(505);
 
+	var _RaisedButton = __webpack_require__(381);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
 	var _RadioButton = __webpack_require__(561);
 
 	var _reactAudioRecorder = __webpack_require__(566);
 
 	var _reactAudioRecorder2 = _interopRequireDefault(_reactAudioRecorder);
+
+	var _chevronRight = __webpack_require__(453);
+
+	var _chevronRight2 = _interopRequireDefault(_chevronRight);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -67969,7 +67986,9 @@
 	        var _this = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props));
 
 	        _this.state = {
-	            loading: true
+	            loading: true,
+	            currentQuestionIndex: 0,
+	            checkboxAnswer: 0
 	        };
 	        return _this;
 	    }
@@ -67992,28 +68011,67 @@
 	        value: function renderQuestion(index) {
 	            var questions = this.state.quiz.questions;
 	            console.log(questions);
-	            switch (questions[0].cat.idCat) {
+	            switch (questions[index].cat.idCat) {
 	                case 1:
-	                    console.log("textbox");
+	                    // Textbox
+	                    // return this.renderTextbox();
 	                    break;
 	                case 2:
-	                    console.log("checkbox");
-	                    this.renderCheckbox();
+	                    // Checkbox
+	                    return this.renderCheckbox(questions[index].allAnswers);
 	                    break;
 	            }
 	        }
 	    }, {
 	        key: 'renderCheckbox',
 	        value: function renderCheckbox(answers) {
-	            return _react2.default.createElement(_RadioButton.RadioButton, {
-	                value: 'light',
-	                label: 'Simple'
+	            answers = this.parseAnswers(answers);
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    _RadioButton.RadioButtonGroup,
+	                    { name: 'checkbox', onChange: this.checkAnswer.bind(this) },
+	                    this.renderCheckboxAnswers(answers)
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'parseAnswers',
+	        value: function parseAnswers(answers) {
+	            return answers.split(';');
+	        }
+	    }, {
+	        key: 'renderCheckboxAnswers',
+	        value: function renderCheckboxAnswers(answers) {
+	            return answers.map(function (elem, key) {
+	                return _react2.default.createElement(_RadioButton.RadioButton, {
+	                    key: key,
+	                    value: elem,
+	                    label: elem
+	                });
+	            }, this);
+	        }
+	    }, {
+	        key: 'checkAnswer',
+	        value: function checkAnswer(event, value) {
+	            this.setState({
+	                checkboxAnswer: value
+	            });
+	        }
+	    }, {
+	        key: 'nextAnswer',
+	        value: function nextAnswer() {
+	            this.setState({
+	                currentQuestionIndex: this.state.currentQuestionIndex + 1
 	            });
 	        }
 	    }, {
 	        key: 'audioChange',
 	        value: function audioChange(data) {
-	            console.log(data);
+	            // sendAudio(data.blob, (res) => {
+	            //     console.log("uspio");
+	            // });
 	        }
 	    }, {
 	        key: 'render',
@@ -68021,8 +68079,14 @@
 	            if (!this.state.loading) return _react2.default.createElement(
 	                'div',
 	                { className: 'container' },
-	                this.renderQuestion(0),
-	                _react2.default.createElement(_reactAudioRecorder2.default, { onChange: this.audioChange })
+	                this.renderQuestion(this.state.currentQuestionIndex),
+	                _react2.default.createElement(_reactAudioRecorder2.default, { onChange: this.audioChange }),
+	                _react2.default.createElement(_RaisedButton2.default, {
+	                    label: 'Confirm Answer',
+	                    primary: true,
+	                    icon: _react2.default.createElement(_chevronRight2.default, null),
+	                    onTouchTap: this.nextAnswer.bind(this)
+	                })
 	            );
 
 	            return _react2.default.createElement('div', null);
