@@ -36,6 +36,7 @@ public class Question {
     @Column(name = "answer")
     String answer;
     
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_question_category")
     QuestionCategory cat;

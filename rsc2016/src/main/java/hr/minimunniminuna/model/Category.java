@@ -23,12 +23,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="category")
-public class Category {
+public class Category{
 
     @Id 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_category")
-    private Long id;
+    long id;
     
     @Column(name="name")
     String name;
@@ -44,14 +44,16 @@ public class Category {
     @JsonIgnore
     @ManyToMany(mappedBy="teamCategories")
     List<Team> team;
-    
-    public Long getId() {
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
+    
+    
 
     public String getName() {
         return name;

@@ -6,15 +6,19 @@
 package hr.minimunniminuna.repositories;
 
 import hr.minimunniminuna.model.Category;
+import javax.persistence.Table;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author paz
  */
+@Repository
+@Table(name="category")
 public interface CategoryRepository extends JpaRepository<Category, String>{
     
-    public Category findByIdCategory(long id);
+    public Category findById(long id);
     public Category findByName(String name);
     
 }

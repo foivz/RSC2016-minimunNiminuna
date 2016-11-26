@@ -19,6 +19,6 @@ import org.springframework.stereotype.Repository;
 @Table(name="question_category")
 public interface QuestionCategoryRepository extends JpaRepository<QuestionCategory, String>{
     
-    public QuestionCategory findByIdCategory(long id);
+    public QuestionCategory findByIdCat(long id);
     
 }
