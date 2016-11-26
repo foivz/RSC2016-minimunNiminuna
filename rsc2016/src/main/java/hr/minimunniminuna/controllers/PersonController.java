@@ -8,10 +8,9 @@ import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import hr.minimunniminuna.model.Credentials;
 import hr.minimunniminuna.model.Person;
-import hr.minimunniminuna.model.Role;
 import hr.minimunniminuna.repositories.PersonRepository;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.HashSet;
 import java.util.List;
 import org.jboss.logging.Logger.Level;
@@ -107,13 +106,7 @@ public class PersonController {
         
         Logger.getLogger("PersonController.java").log(Level.INFO,
                 "POST on /person/signup -- " + person.toString());
-        Role role = new Role();
-        role.setId(2);
-        role.setName("ROLE_USER");
-        HashSet<Role> roles = new HashSet<>();
-
-        roles.add(role);
-        person.setRoles(roles);
+     
         
         Person signed = this.personRepository.save(person);
         return (signed != null)?new ResponseEntity(signed, HttpStatus.OK)

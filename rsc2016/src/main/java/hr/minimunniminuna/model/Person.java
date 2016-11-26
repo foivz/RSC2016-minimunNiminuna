@@ -5,9 +5,9 @@
  */
 package hr.minimunniminuna.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -25,8 +25,7 @@ import javax.persistence.Table;
  * @author Leon Palaić
  */
 @Entity
-@Table(name="person")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="idPerson") 
+@Table(name="person") 
 public class Person implements Serializable {
     
     @Id 
@@ -44,19 +43,18 @@ public class Person implements Serializable {
     @Embedded
     Credentials credentials;
     
- 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "members")
+    private  List<Team>  memberOfGroups;
+    
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "person_role", joinColumns = { @JoinColumn(name = "id_person") },
-            inverseJoinColumns = { @JoinColumn(name = "id_role") })
-    Set<Role> roles = new HashSet<>();
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+	@JoinTable(name = "person_has_category",  joinColumns = { 
+			@JoinColumn(name = "id_person", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_category", 
+					nullable = false, updatable = false) })
+    private List<Category> categories;
+   
+   
 
     public Person() {
         
@@ -81,6 +79,15 @@ public class Person implements Serializable {
         this.idPerson = idPerson;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+    
+    
 
 
     public String getName() {
@@ -112,6 +119,16 @@ public class Person implements Serializable {
         return this.name + " " + this.surname;
     }
 
+    public List<Team> getMemberOfGroups() {
+        return memberOfGroups;
+    }
 
+    public void setMemberOfGroups(List<Team> memberOfGroups) {
+        this.memberOfGroups = memberOfGroups;
+    }
+    
+
+
+    
     
 }
