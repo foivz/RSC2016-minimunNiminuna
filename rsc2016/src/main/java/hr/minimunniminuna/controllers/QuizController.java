@@ -89,7 +89,7 @@ public class QuizController {
     }
 
     @RequestMapping(value = "/{id}/join/{idteam}", method = RequestMethod.POST)
-    public ResponseEntity<Quiz> joinQuiz(@PathVariable long id, @PathVariable long idteam, @RequestBody Quiz quiz2){
+    public ResponseEntity<Quiz> joinQuiz(@PathVariable long id, @PathVariable long idteam){
 
         Quiz quiz = repo.findByIdQuiz(id);
         Team team = teamRepo.findByIdTeam(idteam);
@@ -101,7 +101,7 @@ public class QuizController {
     }
     
     @RequestMapping(value = "/{id}/add/{idquestion}", method = RequestMethod.POST)
-    public ResponseEntity<Quiz> addQuestion(@PathVariable long id, @PathVariable long idquestion, @RequestBody Quiz quiz2){
+    public ResponseEntity<Quiz> addQuestion(@PathVariable long id, @PathVariable long idquestion){
 
         Quiz quiz = repo.findByIdQuiz(id);
         Question question = questions.findByIdQuestion(idquestion);
@@ -113,7 +113,7 @@ public class QuizController {
     }
     
     @RequestMapping(value = "/{id}/add/{idaward}", method = RequestMethod.POST)
-    public ResponseEntity<Quiz> addReqards(@PathVariable long id, @PathVariable long idaward, @RequestBody Quiz quiz2){
+    public ResponseEntity<Quiz> addReqards(@PathVariable long id, @PathVariable long idaward){
 
         Quiz quiz = repo.findByIdQuiz(id);
         Prize prize = prizes.findByIdPrize(idaward);
