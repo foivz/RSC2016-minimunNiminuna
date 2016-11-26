@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -56,7 +57,9 @@ public class Person implements Serializable {
 					nullable = false, updatable = false) })
     private List<Category> categories;
     
-  
+    
+    @OneToMany(mappedBy="creator")
+    List<Quiz> creatorOfQuizes;
    
 
     public Person() {

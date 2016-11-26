@@ -11,6 +11,8 @@ import hr.minimunniminuna.model.Team;
 import hr.minimunniminuna.repositories.QuizRepository;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +52,12 @@ public class QuizController {
     }
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Quiz> signup(@RequestBody Quiz quiz2) {
+        
+        Logger.getLogger("QuizController.java").log(Level.INFO,
+                "POST on /quiz/q -- " + quiz2.getName());
+        
+        Logger.getLogger("QuizController.java").log(Level.INFO,
+                "POST on /quiz/q -- " + quiz2.getCategory().getId());
         
         Quiz quiz = this.repo.save(quiz2);
         

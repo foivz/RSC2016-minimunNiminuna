@@ -5,6 +5,7 @@
  */
 package hr.minimunniminuna.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +32,11 @@ public class QuestionCategory {
     @Column(name="name")
     String name;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cat")
+    @Column(name="time")
+    int time;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "cat")
     List<Question> questions;
 
     public long getIdCat() {
@@ -50,6 +55,23 @@ public class QuestionCategory {
         this.questions = questions;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+    
+    
     
     
     

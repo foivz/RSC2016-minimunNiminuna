@@ -42,11 +42,18 @@ public class Quiz {
     String beginTime;
     @Column(name="end_time")
     String endTime;
+    @Column(name="all_answers")
+    String allAnswers;
     
     
     
     @Embedded
     Location location;
+    
+    @ManyToOne
+    @JoinColumn(name="id_person")
+    Person cretaor;
+    
     
     
     @ManyToMany(fetch = FetchType.EAGER)
@@ -87,6 +94,33 @@ public class Quiz {
     public String getName() {
         return name;
     }
+
+    public Person getCretaor() {
+        return cretaor;
+    }
+
+    public void setCretaor(Person cretaor) {
+        this.cretaor = cretaor;
+    }
+    
+
+    public String getAllAnswers() {
+        return allAnswers;
+    }
+
+    public void setAllAnswers(String allAnswers) {
+        this.allAnswers = allAnswers;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+    
+    
 
     public void setName(String name) {
         this.name = name;
