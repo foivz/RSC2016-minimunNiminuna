@@ -28,9 +28,15 @@ import javax.sound.sampled.AudioFileFormat.Type;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,39 +50,35 @@ public class SpeechController {
    
     
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String getTextFromSpeechh(@RequestBody File64 file) throws IllegalStateException, IOException{
-        
-        
+    public ResponseEntity getTextFromSpeechh(@RequestParam("file") MultipartFile fe) throws IllegalStateException, IOException, FileNotFoundException, LineUnavailableException{
         
         SpeechToText service = new SpeechToText();
         service.setUsernameAndPassword("257413c5-7f5d-4045-a009-a1e3e3bd89fc", "hthmwugNOrLc");
         
         
-        System.out.println(file.getData());
-        File f = getAudio(file.decode(file.getData()));
+        File f = convert(fe,".wav");
         
         RecognizeOptions options = new RecognizeOptions.Builder()
+            .continuous(true)
+            .interimResults(true)
             .contentType(HttpMediaType.AUDIO_WAV)
             .build();
         
-        
         SpeechResults transcript = service.recognize(f, options).execute();
-        
+
         System.out.println(transcript.toString());
         
-        return transcript.toString();
+        return new ResponseEntity(transcript.toString(), HttpStatus.OK);
     
     }
     
     @RequestMapping(value = "/img", method = RequestMethod.POST)
-    public String getTextFromImg(@RequestBody File64 file) throws IllegalStateException, IOException{
-        
-        
+    public ResponseEntity<String> getTextFromImg(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException, InterruptedException{
         
         VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
         service.setApiKey("a9c987abccb0abb8d53e49ba5e0b3cc7a856b2a8");
         
-        File f = getImage(file.decode(file.getData()));
+        File f = convert(file);
         
         System.out.println("Classify an image");
         ClassifyImagesOptions options = new ClassifyImagesOptions.Builder()
@@ -86,32 +88,46 @@ public class SpeechController {
         VisualClassification result = service.classify(options).execute();
         System.out.println(result);
         
-        return result.toString();
+        return new ResponseEntity(result.toString(), HttpStatus.OK);
     
     }
     
     
-   public File convert(MultipartFile file) throws IOException{    
-    File convFile = new File(file.getOriginalFilename()+".wav");
-    convFile.createNewFile(); 
-    FileOutputStream fos = new FileOutputStream(convFile); 
-    fos.write(file.getBytes());
-    fos.close(); 
-    return convFile;
+   public File convert(MultipartFile file, String ext) throws IOException{    
+        File convFile = new File(file.getOriginalFilename()+ext);
+        convFile.createNewFile(); 
+        FileOutputStream fos = new FileOutputStream(convFile); 
+        fos.write(file.getBytes());
+        fos.close(); 
+        return convFile;
+    }
+   
+     public File convert(MultipartFile file) throws IOException{    
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile(); 
+        FileOutputStream fos = new FileOutputStream(convFile); 
+        fos.write(file.getBytes());
+        fos.close(); 
+        return convFile;
     }
     
-    public File getAudio(byte[] array) throws FileNotFoundException, IOException{
+    public File getAudio(byte[] array) throws FileNotFoundException, IOException, LineUnavailableException{
         
         InputStream b_in = new ByteArrayInputStream(array);
 
-        int sampleRate = 16000;
-        AudioFormat format = new AudioFormat(sampleRate, 16, 1, true, false);
+        int sampleRate = 1411;
+        
+        AudioFormat format = new AudioFormat(sampleRate, 16, 2, true, false);
+        
+        File f = new File("/file.wav");
+        
         AudioInputStream stream = new AudioInputStream(b_in, format,
                 array.length);
-        File file = new File("file.wav");
-        AudioSystem.write(stream, Type.WAVE, file);
-       
-        return file;
+        
+        AudioSystem.write(stream, Type.WAVE, f);
+        
+        
+       return f;
     }
     
     public File getImage(byte[] array) throws IOException{

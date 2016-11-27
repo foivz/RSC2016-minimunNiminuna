@@ -44,6 +44,9 @@ public class Category{
     @JsonIgnore
     @ManyToMany(mappedBy="teamCategories")
     List<Team> team;
+    
+    @Column(name="icon")
+    String icon;
 
     public long getId() {
         return id;
@@ -86,6 +89,15 @@ public class Category{
     public void setTeam(List<Team> team) {
         this.team = team;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+    
     
     
     

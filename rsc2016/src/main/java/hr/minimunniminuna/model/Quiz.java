@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -69,11 +70,12 @@ public class Quiz {
 					nullable = false, updatable = false) })
     List<Question> questions;
     
+    
     @ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "team_has_quiz",  joinColumns = { 
 			@JoinColumn(name = "id_quiz", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "id_team", 
-					nullable = false, updatable = false) })
+    					nullable = false, updatable = false) })
     List<Team> teams;
     
     @ManyToOne
