@@ -27,6 +27,12 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- face -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook</artifactId>
+        </dependency>
+        
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
