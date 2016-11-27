@@ -179,7 +179,7 @@ public class QuizController {
         .build();
         
         String payload = APNS.newPayload().alertBody(msg).build();
-        String token = "3838f683f713828784c7cf2b02c754a8abbe2a3f57c4582b712e87024685aab8";
+        String token = "e0a8e974e147842c3ec1fddfb179b47e6d6b7b95ee6b2a51436dff7df1a98278";
         service.push(token, payload);
      }
 }
