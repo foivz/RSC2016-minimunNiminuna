@@ -12,6 +12,7 @@ import Divider from 'material-ui/Divider';
 import IconHome from 'material-ui/svg-icons/action/home';
 import IconPowerOff from 'material-ui/svg-icons/action/power-settings-new';
 import IconProfile from 'material-ui/svg-icons/action/perm-identity';
+import IconTeam from 'material-ui/svg-icons/social/group';
 
 export default class Navigation extends React.Component {
     constructor(props) {
@@ -85,6 +86,12 @@ export default class Navigation extends React.Component {
                     <NavLink to="/user/profile">
                         <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconProfile/>}>
                             Profile
+                        </MenuItem>
+                    </NavLink>
+
+                    <NavLink to="/user/team">
+                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconTeam/>}>
+                            Team
                         </MenuItem>
                     </NavLink>
 

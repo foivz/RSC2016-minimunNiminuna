@@ -5,9 +5,9 @@ export function send (method, endpoint, data, headers, success, error) {
     data = JSON.stringify(data);
 
     let options = {};
-    
+
     options.method = method;
-    if (data != undefined && data != null) options.body = data;
+    options.body = data;
     if (headers != undefined && headers != null) options.headers = headers;
 
     fetch(url, options)

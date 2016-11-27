@@ -10,7 +10,7 @@ export default class DashboardModerator extends React.Component {
 
     render() {
         return(
-            <div className="container">
+            <div className="container dashboard-container">
                 <div className="row">
                     <div className="col-md-4">
                         <Card>

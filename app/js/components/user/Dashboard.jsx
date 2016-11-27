@@ -3,6 +3,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import FlatButton from 'material-ui/FlatButton';
 import {fetchQuizes} from '../../utils/appService';
 import {hashHistory} from 'react-router';
+import Chip from 'material-ui/Chip';
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -44,19 +45,19 @@ export default class Main extends React.Component {
 
     renderQuizes() {
         return this.state.quizes.map(function(elem, key) {
-            console.log(elem);
+            var author = "Author - " + elem.creator.credentials.username;
             return(
                 <div className="col-md-4" key={key}>
                     <Card>
                         <CardHeader
-                            title="Author - Jennifer Lensey"
-                            subtitle="Biology Quiz"
+                            title={author}
+                            subtitle={elem.name}
                             avatar="https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg"
                         />
                         <CardMedia
                             overlay={<CardTitle title={elem.name} subtitle="For sixth grade" />}
                         >
-                            <img src="https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg" />
+                            <img src={elem.category.icon} />
                         </CardMedia>
                         <CardTitle title="QUIZ" subtitle={elem.beginDate + ' - ' + elem.endDate} />
                         <CardText>
@@ -92,10 +93,30 @@ export default class Main extends React.Component {
 
     render() {
 
+        const style = {
+            chip: {
+                backgroundColor: '#c1c1c1',
+                marginBottom: '10px',
+                marginRight: '10px',
+                display: 'inline-block'
+            }
+        };
+
         if(!this.state.loading) {
             return(
-                <div className="container">
-                    {this.renderQuizes()}
+                <div className="container dashboard-container">
+                    <Chip style={style.chip}>
+                        #history
+                    </Chip>
+                    <Chip style={style.chip}>
+                        #informatic
+                    </Chip>
+                    <Chip style={style.chip}>
+                        #mathematic
+                    </Chip>
+                    <div className="row">
+                        {this.renderQuizes()}
+                    </div>
                     <div id="map"></div>
                 </div>
             );

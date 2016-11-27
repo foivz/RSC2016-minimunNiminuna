@@ -11,27 +11,31 @@ export function fetchQuizByID(quizID, success) {
 }
 
 export function sendAudio(audio, success) {
-    var url = '/speech/';
+    var url = 'http://139.59.158.214:8080/speech/';
+    var data = new FormData();
+    data.append('file', audio, "test.wav");
 
-    var reader = new FileReader();
-    reader.addEventListener("loadend", function() {
-
-            var base64FileData = reader.result.toString();
-            var base64 = base64FileData.substring(22);
-
-            var data = {
-                data: base64
-            };
-
-            var headers = {
-                'Content-type': 'application/json'
-            };
-
-            send('POST', url, data, headers, (res) => success(res), (err) => console.log(err));
-        });
-
-    reader.readAsDataURL(audio);
-
-
+    fetch(url, {
+        method: 'POST',
+        body: data
+    }).then((res) => {
+        return res.json();
+    }).then(success).catch((err) => {
+        console.log(err);
+    });
 }
 
+export function sendImage(image, success) {
+    var url = 'http://139.59.158.214:8080/speech/img';
+    var data = new FormData();
+    data.append('file', image, image.name);
+
+    fetch(url, {
+        method: 'POST',
+        body: data
+    }).then((res) => {
+        return res.json();
+    }).then(success).catch((err) => {
+        console.log(err);
+    });
+}

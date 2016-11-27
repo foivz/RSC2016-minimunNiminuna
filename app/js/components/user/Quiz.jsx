@@ -1,5 +1,5 @@
 import React from 'react';
-import {fetchQuizByID, sendAudio} from '../../utils/appService';
+import {fetchQuizByID, sendAudio, sendImage} from '../../utils/appService';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -11,6 +11,8 @@ import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import {hashHistory} from 'react-router';
 import Divider from 'material-ui/Divider';
+import Dropzone from 'react-dropzone';
+import ReactCountdownClock from 'react-countdown-clock';
 
 
 export default class Quiz extends React.Component {
@@ -33,13 +35,13 @@ export default class Quiz extends React.Component {
             this.setState({
                 loading: false,
                 quiz: res,
+                timer: res.questions[0].cat.time
             });
         });
     }
 
     renderQuestion(index) {
         var questions = this.state.quiz.questions;
-        console.log(questions);
         switch(questions[index].cat.idCat) {
             case 1: // Textbox
                 return this.renderTextbox(questions[index]);
@@ -47,7 +49,62 @@ export default class Quiz extends React.Component {
             case 2: // Checkbox
                 return this.renderCheckbox(questions[index].allAnswers, questions[index].question);
                 break;
+            case 4: // Images
+                return this.renderImageContainer(questions[index].allAnswers, questions[index].question);
+                break;
+            case 5:
+                return this.renderImageUpload(questions[index].question);
+                break;
         }
+        this.setCountdown();
+    }
+
+    renderImageUpload(question) {
+        return (
+            <Dropzone
+                onDrop={this.onDrop.bind(this)}
+                multiple={false}
+                className="dropzone"
+            >
+                <h4 className="dropzone-text">{question}</h4>
+            </Dropzone>
+        );
+    }
+
+    setCountdown() {
+
+    }
+
+    onDrop(files) {
+        sendImage(files[0], (res) => {
+            var result = res.images[0].classifiers[0].classes[0];
+            this.setState({
+                infoMessage: result.name + " " + parseInt(result.score * 100) + "%",
+                infoOpen: true
+            });
+        });
+    }
+
+    renderImageContainer(answers, question) {
+        return(
+            <div>
+                <h2>{question}</h2>
+                <div className="row">
+                    {this.renderImageSelect(answers)}
+                </div>
+            </div>
+        );
+    }
+
+    renderImageSelect(answers) {
+        answers = this.parseAnswers(answers);
+        return answers.map(function(elem, key) {
+            return (
+                <div key={key} className="col-md-3">
+                    <img src={elem} alt="Image" className="image-picker" onClick={() => this.setImageAnswer(elem)}/>
+                </div>
+            );
+        }, this);
     }
 
     renderCheckbox(answers, question) {
@@ -88,27 +145,40 @@ export default class Quiz extends React.Component {
     renderTextbox(question) {
         return (
             <TextField
+                value={this.state.textboxAnswer}
                 hintText={question.question}
                 onChange={this.setTextboxAnswer.bind(this)}
             />
         );
     }
 
+    setImageAnswer(elem) {
+        this.setState({
+            imageAnswer: elem,
+            infoOpen: false
+        }, this.nextAnswer);
+    }
+
     setAnswer(event, value) {
         this.setState({
-            checkboxAnswer: value
+            checkboxAnswer: value,
+            infoOpen: false
         });
     }
 
     setTextboxAnswer(event, value) {
         this.setState({
-            textboxAnswer: value
+            textboxAnswer: value,
+            infoOpen: false
         });
     }
 
     checkAnswer() {
+        this.timer._cancelTimer();
         var question = this.state.quiz.questions[this.state.currentQuestionIndex];
-        if (this.state.checkboxAnswer == question.answer || this.state.textboxAnswer == question.answer) {
+        if (this.state.checkboxAnswer == question.answer
+            || this.state.textboxAnswer == question.answer
+            || this.state.imageAnswer == question.answer) {
             this.setState({
                 infoMessage: 'Answer is correct :)',
                 infoOpen: true,
@@ -127,6 +197,8 @@ export default class Quiz extends React.Component {
         var self = this;
         this.checkAnswer();
 
+        this.timer._cancelTimer();
+
         if (this.state.quiz.questions.length === this.state.currentQuestionIndex + 1) {
             var percent = parseInt((this.state.correctAnswerSum / this.state.quiz.questions.length) * 100);
             this.setState({
@@ -137,16 +209,21 @@ export default class Quiz extends React.Component {
         else {
             setTimeout(function() {
                 self.setState({
-                    currentQuestionIndex: self.state.currentQuestionIndex + 1
+                    currentQuestionIndex: self.state.currentQuestionIndex + 1,
+                    timer: self.state.quiz.questions[self.state.currentQuestionIndex + 1].cat.time
                 });
-            }, 1500);
+            }, 0);
         }
-
     }
 
     audioChange(data) {
         sendAudio(data.blob, (res) => {
-            console.log(res);
+            var result = res.results[0].alternatives[0];
+            this.setState({
+                infoMessage: result.transcript + " " + parseInt(result.confidence * 100) + "%",
+                infoOpen: true,
+                textboxAnswer: result.transcript
+            });
         });
     }
 
@@ -168,9 +245,20 @@ export default class Quiz extends React.Component {
         if(!this.state.loading)
             return(
                 <div>
+                    <div className="text-center">
+                        <ReactCountdownClock
+                             seconds={this.state.timer}
+                             color="#000"
+                             alpha={0.2}
+                             size={150}
+                             onComplete={this.nextAnswer.bind(this)}
+                             ref={ (timer) => {this.timer = timer; }}
+                        />
+                    </div>
+
                     <div className="container quiz-container">
                         {this.renderQuestion(this.state.currentQuestionIndex)}
-                        <AudioRecorder onChange={this.audioChange} />
+                        <AudioRecorder onChange={this.audioChange.bind(this)} download={false}/>
                         <RaisedButton
                             label="Next Answer"
                             primary={true}
@@ -189,7 +277,7 @@ export default class Quiz extends React.Component {
                     <Snackbar
                         open={this.state.infoOpen}
                         message={this.state.infoMessage}
-                        autoHideDuration={2000}
+                        autoHideDuration={3000}
                     />
                 </div>
             );
