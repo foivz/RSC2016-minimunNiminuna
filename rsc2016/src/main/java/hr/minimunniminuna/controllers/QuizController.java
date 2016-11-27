@@ -94,10 +94,15 @@ public class QuizController {
         Quiz quiz = repo.findByIdQuiz(id);
         Team team = teamRepo.findByIdTeam(idteam);
         
-        quiz.getTeams().add(team);
-        repo.save(quiz);
+        List<Team> teamsByQuiz = quiz.getTeams();
+        if(teamsByQuiz.contains(team)){
+            return new ResponseEntity(quiz, HttpStatus.NOT_ACCEPTABLE);
+        }else{
+            quiz.getTeams().add(team);
+            repo.save(quiz);
         
-        return new ResponseEntity(quiz, HttpStatus.OK);
+            return new ResponseEntity(quiz, HttpStatus.OK);
+        }
     }
     
 
@@ -120,9 +125,14 @@ public class QuizController {
         Quiz quiz = repo.findByIdQuiz(id);
         Prize prize = prizes.findByIdPrize(idaward);
         
-        quiz.getPrizes().add(prize);
-        repo.save(quiz);
+        List<Prize> prizesByQuiz = quiz.getPrizes();
+        if(prizesByQuiz.contains(prize)){
+            return new ResponseEntity(quiz, HttpStatus.NOT_ACCEPTABLE);
+        }else{
+            quiz.getPrizes().add(prize);
+            repo.save(quiz);
         
-        return new ResponseEntity(quiz, HttpStatus.OK);
+            return new ResponseEntity(quiz, HttpStatus.OK);
+        }
     }
 }
