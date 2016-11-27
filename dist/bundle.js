@@ -41725,7 +41725,7 @@
 	                opacity: 1,
 	                delay: 0.5,
 	                onComplete: function onComplete() {
-	                    if (username === 'u') _reactRouter.hashHistory.push('/user');else _reactRouter.hashHistory.push('/moderator');
+	                    if (username === 'user') _reactRouter.hashHistory.push('/user');else _reactRouter.hashHistory.push('/moderator');
 	                }
 	            });
 	        }
@@ -41764,12 +41764,12 @@
 	                    _react2.default.createElement(
 	                        'h1',
 	                        { className: 'heading' },
-	                        'QUIZ APP'
+	                        'QUEASE'
 	                    ),
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'label-desc' },
-	                        'Application Description'
+	                        'Test your knowledge and sharpen your skills'
 	                    ),
 	                    _react2.default.createElement(_RaisedButton2.default, {
 	                        label: 'GET STARTED',
@@ -50638,7 +50638,7 @@
 	                null,
 	                _react2.default.createElement('div', { className: 'overlay' }),
 	                _react2.default.createElement(_AppBar2.default, {
-	                    title: 'App name',
+	                    title: 'QUEASE',
 	                    className: 'mainAppBar',
 	                    iconClassNameRight: 'muidocs-icon-navigation-expand-more',
 	                    onLeftIconButtonTouchTap: this.handleDrawerToggle.bind(this)
@@ -58091,7 +58091,7 @@
 	                null,
 	                _react2.default.createElement('div', { className: 'overlay' }),
 	                _react2.default.createElement(_AppBar2.default, {
-	                    title: 'App name',
+	                    title: 'QUEASE',
 	                    className: 'mainAppBar',
 	                    iconClassNameRight: 'muidocs-icon-navigation-expand-more',
 	                    onLeftIconButtonTouchTap: this.handleDrawerToggle.bind(this)
@@ -58335,7 +58335,7 @@
 	                    { className: 'col-md-4', key: key },
 	                    _react2.default.createElement(
 	                        _Card.Card,
-	                        null,
+	                        { style: { marginTop: '10px', marginBottom: '10px' } },
 	                        _react2.default.createElement(_Card.CardHeader, {
 	                            title: author,
 	                            subtitle: elem.name,
@@ -59939,6 +59939,7 @@
 	exports.getIcons = getIcons;
 	exports.getQuestions = getQuestions;
 	exports.getAwards = getAwards;
+	exports.setQuizPoints = setQuizPoints;
 
 	var _APIService = __webpack_require__(506);
 
@@ -60031,6 +60032,19 @@
 
 	    fetch(url, {
 	        method: 'GET'
+	    }).then(function (res) {
+	        return res.json();
+	    }).then(success).catch(function (err) {
+	        console.log(err);
+	    });
+	}
+
+	function setQuizPoints(data, success) {
+	    var url = 'http://139.59.158.214:8080/stat/' + id + "";
+
+	    fetch(url, {
+	        method: 'POST',
+	        body: data
 	    }).then(function (res) {
 	        return res.json();
 	    }).then(success).catch(function (err) {
@@ -60568,7 +60582,7 @@
 	                    { className: 'col-md-4', key: key },
 	                    _react2.default.createElement(
 	                        _Card.Card,
-	                        null,
+	                        { style: { marginTop: '10px', marginBottom: '10px' } },
 	                        _react2.default.createElement(_Card.CardHeader, {
 	                            title: author,
 	                            subtitle: elem.name,

@@ -92,3 +92,15 @@ export function getAwards(success) {
         console.log(err);
     });
 }
+
+export function setQuizPoints(data, success) {
+    var url = 'http://139.59.158.214:8080/stat/' + gameID + "/team/" + teamID + "/" + score;
+
+    fetch(url, {
+        method: 'GET',
+    }).then((res) => {
+        return res.json();
+    }).then(success).catch((err) => {
+        console.log(err);
+    });
+}

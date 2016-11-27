@@ -50,7 +50,7 @@ export default class Landing extends React.Component {
             opacity: 1,
             delay: 0.5,
             onComplete: () => {
-                if (username === 'u')
+                if (username === 'user')
                     hashHistory.push('/user');
                 else
                     hashHistory.push('/moderator');
@@ -89,8 +89,8 @@ export default class Landing extends React.Component {
             <div id="landing">
 
                 <article className="article">
-                    <h1 className="heading">QUIZ APP</h1>
-                    <label className="label-desc">Application Description</label>
+                    <h1 className="heading">QUEASE</h1>
+                    <label className="label-desc">Test your knowledge and sharpen your skills</label>
                     <RaisedButton
                         label="GET STARTED"
                         primary={true}

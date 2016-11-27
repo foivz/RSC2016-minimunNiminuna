@@ -16,12 +16,14 @@
     @include translate(-50%, -50%);
 
     h1.heading {
-      font-size: 62px;
+      font-size: 90px;
       margin-bottom: 0;
       line-height: 1;
+      letter-spacing: 12px;
     }
 
     label.label-desc {
+      font-size: 20px;
       width: 100%;
       display: block;
       margin-bottom: 40px;

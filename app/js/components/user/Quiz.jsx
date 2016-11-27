@@ -71,10 +71,6 @@ export default class Quiz extends React.Component {
         );
     }
 
-    setCountdown() {
-
-    }
-
     onDrop(files) {
         sendImage(files[0], (res) => {
             var result = res.images[0].classifiers[0].classes[0];
@@ -212,7 +208,7 @@ export default class Quiz extends React.Component {
                     currentQuestionIndex: self.state.currentQuestionIndex + 1,
                     timer: self.state.quiz.questions[self.state.currentQuestionIndex + 1].cat.time
                 });
-            }, 0);
+            }, 1200);
         }
     }
 

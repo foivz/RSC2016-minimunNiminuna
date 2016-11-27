@@ -60,7 +60,7 @@ export default class Navigation extends React.Component {
                 <div className="overlay"></div>
 
                 <AppBar
-                    title="App name"
+                    title="QUEASE"
                     className="mainAppBar"
                     iconClassNameRight="muidocs-icon-navigation-expand-more"
                     onLeftIconButtonTouchTap={this.handleDrawerToggle.bind(this)}

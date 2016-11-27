@@ -48,7 +48,7 @@ export default class DashboardModerator extends React.Component {
             var author = "Author - " + elem.creator.credentials.username;
             return(
                 <div className="col-md-4" key={key}>
-                    <Card>
+                    <Card style={{marginTop: '10px', marginBottom: '10px'}}>
                         <CardHeader
                             title={author}
                             subtitle={elem.name}
