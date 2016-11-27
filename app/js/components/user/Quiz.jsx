@@ -1,5 +1,5 @@
 import React from 'react';
-import {fetchQuizByID, sendAudio, sendImage} from '../../utils/appService';
+import {fetchQuizByID, sendAudio, sendImage, setQuizPoints} from '../../utils/appService';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -197,11 +197,13 @@ export default class Quiz extends React.Component {
 
         if (this.state.quiz.questions.length === this.state.currentQuestionIndex + 1) {
             var percent = parseInt((this.state.correctAnswerSum / this.state.quiz.questions.length) * 100);
+            setQuizPoints(this.props.params.id, percent);
             this.setState({
                dialogOpen: true,
                 result: 'Quiz score: ' + percent + '%'
             });
         }
+
         else {
             setTimeout(function() {
                 self.setState({

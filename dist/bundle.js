@@ -60039,12 +60039,11 @@
 	    });
 	}
 
-	function setQuizPoints(data, success) {
-	    var url = 'http://139.59.158.214:8080/stat/' + id + "";
+	function setQuizPoints(gameID, score, success) {
+	    var url = 'http://139.59.158.214:8080/stat/' + gameID + "/team/1/" + score;
 
 	    fetch(url, {
-	        method: 'POST',
-	        body: data
+	        method: 'GET'
 	    }).then(function (res) {
 	        return res.json();
 	    }).then(success).catch(function (err) {
@@ -68702,9 +68701,6 @@
 	            );
 	        }
 	    }, {
-	        key: 'setCountdown',
-	        value: function setCountdown() {}
-	    }, {
 	        key: 'onDrop',
 	        value: function onDrop(files) {
 	            var _this3 = this;
@@ -68854,6 +68850,7 @@
 
 	            if (this.state.quiz.questions.length === this.state.currentQuestionIndex + 1) {
 	                var percent = parseInt(this.state.correctAnswerSum / this.state.quiz.questions.length * 100);
+	                (0, _appService.setQuizPoints)(this.props.params.id, percent);
 	                this.setState({
 	                    dialogOpen: true,
 	                    result: 'Quiz score: ' + percent + '%'
@@ -68864,7 +68861,7 @@
 	                        currentQuestionIndex: self.state.currentQuestionIndex + 1,
 	                        timer: self.state.quiz.questions[self.state.currentQuestionIndex + 1].cat.time
 	                    });
-	                }, 0);
+	                }, 1200);
 	            }
 	        }
 	    }, {

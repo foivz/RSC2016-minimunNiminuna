@@ -93,11 +93,11 @@ export function getAwards(success) {
     });
 }
 
-export function setQuizPoints(data, success) {
-    var url = 'http://139.59.158.214:8080/stat/' + gameID + "/team/" + teamID + "/" + score;
+export function setQuizPoints(gameID, score, success) {
+    var url = 'http://139.59.158.214:8080/stat/' + gameID + "/team/1/" + score;
 
     fetch(url, {
-        method: 'GET',
+        method: 'GET'
     }).then((res) => {
         return res.json();
     }).then(success).catch((err) => {
