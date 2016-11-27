@@ -6,4 +6,7 @@ target ‘RSC’ do
 	pod 'IQKeyboardManagerSwift', '4.0.6'
 	pod 'Unbox'
 	pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
+	pod 'FacebookCore'
+    pod 'FacebookLogin'
+    
 end
