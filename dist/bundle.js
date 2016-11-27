@@ -59937,6 +59937,8 @@
 	exports.sendImage = sendImage;
 	exports.createTeam = createTeam;
 	exports.getIcons = getIcons;
+	exports.getQuestions = getQuestions;
+	exports.getAwards = getAwards;
 
 	var _APIService = __webpack_require__(506);
 
@@ -60002,6 +60004,30 @@
 
 	function getIcons(success) {
 	    var url = 'http://139.59.158.214:8080/icon/';
+
+	    fetch(url, {
+	        method: 'GET'
+	    }).then(function (res) {
+	        return res.json();
+	    }).then(success).catch(function (err) {
+	        console.log(err);
+	    });
+	}
+
+	function getQuestions(success) {
+	    var url = 'http://139.59.158.214:8080/question/';
+
+	    fetch(url, {
+	        method: 'GET'
+	    }).then(function (res) {
+	        return res.json();
+	    }).then(success).catch(function (err) {
+	        console.log(err);
+	    });
+	}
+
+	function getAwards(success) {
+	    var url = 'http://139.59.158.214:8080/prize/';
 
 	    fetch(url, {
 	        method: 'GET'
@@ -60750,6 +60776,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _appService = __webpack_require__(505);
+
 	var _RaisedButton = __webpack_require__(381);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
@@ -60777,6 +60805,10 @@
 	var _TimePicker = __webpack_require__(537);
 
 	var _TimePicker2 = _interopRequireDefault(_TimePicker);
+
+	var _Checkbox = __webpack_require__(437);
+
+	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
 	var _Stepper = __webpack_require__(554);
 
@@ -60807,7 +60839,9 @@
 	            selectBoxValue: 1,
 	            loadingStepper: false,
 	            finishedStepper: false,
-	            stepIndex: 0
+	            stepIndex: 0,
+	            loadingQuestions: true,
+	            loadingAwards: true
 	        };
 	        _this.handleNext = _this.handleNext.bind(_this);
 	        _this.handlePrev = _this.handlePrev.bind(_this);
@@ -60815,6 +60849,26 @@
 	    }
 
 	    _createClass(AddQuiz, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            (0, _appService.getQuestions)(function (res) {
+	                _this2.setState({
+	                    loadingQuestions: false,
+	                    questions: res
+	                });
+	            });
+
+	            (0, _appService.getAwards)(function (res) {
+	                console.log(res);
+	                _this2.setState({
+	                    loadingAwards: false,
+	                    awards: res
+	                });
+	            });
+	        }
+	    }, {
 	        key: 'dummyAsync',
 	        value: function dummyAsync(cb) {
 	            this.setState({ loading: true }, function () {
@@ -60824,13 +60878,13 @@
 	    }, {
 	        key: 'handleNext',
 	        value: function handleNext() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            var stepIndex = this.state.stepIndex;
 
 	            if (!this.state.loading) {
 	                this.dummyAsync(function () {
-	                    return _this2.setState({
+	                    return _this3.setState({
 	                        loading: false,
 	                        stepIndex: stepIndex + 1,
 	                        finished: stepIndex >= 2
@@ -60841,18 +60895,29 @@
 	    }, {
 	        key: 'handlePrev',
 	        value: function handlePrev() {
-	            var _this3 = this;
+	            var _this4 = this;
 
 	            var stepIndex = this.state.stepIndex;
 
 	            if (!this.state.loading) {
 	                this.dummyAsync(function () {
-	                    return _this3.setState({
+	                    return _this4.setState({
 	                        loading: false,
 	                        stepIndex: stepIndex - 1
 	                    });
 	                });
 	            }
+	        }
+	    }, {
+	        key: 'renderCheckbox',
+	        value: function renderCheckbox(data) {
+	            return data.map(function (elem, key) {
+	                return _react2.default.createElement(_Checkbox2.default, {
+	                    key: key,
+	                    label: elem.question || elem.name,
+	                    style: { marginTop: '5px', marginBottom: '5px' }
+	                });
+	            }, this);
 	        }
 	    }, {
 	        key: 'getStepContent',
@@ -60876,6 +60941,12 @@
 	                                fullWidth: true
 	                            }),
 	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement(_TextField2.default, {
+	                                floatingLabelText: 'Description',
+	                                hintText: 'Description',
+	                                fullWidth: true
+	                            }),
+	                            _react2.default.createElement('br', null),
 	                            _react2.default.createElement(
 	                                _SelectField2.default,
 	                                {
@@ -60884,9 +60955,9 @@
 	                                    onChange: this.handleChange,
 	                                    fullWidth: true
 	                                },
-	                                _react2.default.createElement(_MenuItem2.default, { value: 1, primaryText: 'Informatic' }),
-	                                _react2.default.createElement(_MenuItem2.default, { value: 2, primaryText: 'Mathematic' }),
-	                                _react2.default.createElement(_MenuItem2.default, { value: 3, primaryText: 'Biology' })
+	                                _react2.default.createElement(_MenuItem2.default, { width: 150, value: 1, primaryText: 'Informatic' }),
+	                                _react2.default.createElement(_MenuItem2.default, { width: 150, value: 2, primaryText: 'Mathematic' }),
+	                                _react2.default.createElement(_MenuItem2.default, { width: 150, value: 3, primaryText: 'Biology' })
 	                            ),
 	                            _react2.default.createElement('br', null),
 	                            _react2.default.createElement('br', null),
@@ -60896,34 +60967,38 @@
 	                                mode: 'landscape',
 	                                fullWidth: true
 	                            }),
+	                            _react2.default.createElement(_DatePicker2.default, {
+	                                hintText: 'Date end',
+	                                container: 'inline',
+	                                mode: 'landscape',
+	                                fullWidth: true
+	                            }),
 	                            _react2.default.createElement(_TimePicker2.default, {
 	                                hintText: 'Time begin',
+	                                autoOk: true,
+	                                fullWidth: true
+	                            }),
+	                            _react2.default.createElement(_TimePicker2.default, {
+	                                hintText: 'Time end',
 	                                autoOk: true,
 	                                fullWidth: true
 	                            })
 	                        )
 	                    );
 	                case 1:
-	                    return _react2.default.createElement(
+	                    if (!this.state.loadingQuestions) return _react2.default.createElement(
 	                        'div',
 	                        null,
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Ad group status is different than the statuses for campaigns, ads, and keywords, though the statuses can affect each other. Ad groups are contained within a campaign, and each campaign can have one or more ad groups. Within each ad group are ads, keywords, and bids.'
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Something something whatever cool'
-	                        )
+	                        this.renderCheckbox(this.state.questions)
 	                    );
+	                    return _react2.default.createElement('div', null);
 	                case 2:
-	                    return _react2.default.createElement(
-	                        'p',
+	                    if (!this.state.loadingAwards) return _react2.default.createElement(
+	                        'div',
 	                        null,
-	                        'Try out different ad text to see what brings in the most customers, and learn how to enhance your ads using features like ad extensions. If you run into any problems with your ads, find out how to tell if they\'re running and how to resolve approval issues.'
+	                        this.renderCheckbox(this.state.awards)
 	                    );
+	                    return _react2.default.createElement('div', null);
 	                default:
 	                    return 'You\'re a long way from home sonny jim!';
 	            }
@@ -60976,7 +61051,7 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { style: { width: '100%', maxWidth: 700, margin: 'auto' } },
+	                { className: 'general-container', style: { width: '100%', maxWidth: 800 } },
 	                _react2.default.createElement(
 	                    _Stepper.Stepper,
 	                    { activeStep: stepIndex },

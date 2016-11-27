@@ -68,3 +68,27 @@ export function getIcons(success) {
     });
 }
 
+
+export function getQuestions(success) {
+    var url = 'http://139.59.158.214:8080/question/';
+
+    fetch(url, {
+        method: 'GET'
+    }).then((res) => {
+        return res.json();
+    }).then(success).catch((err) => {
+        console.log(err);
+    });
+}
+
+export function getAwards(success) {
+    var url = 'http://139.59.158.214:8080/prize/';
+
+    fetch(url, {
+        method: 'GET'
+    }).then((res) => {
+        return res.json();
+    }).then(success).catch((err) => {
+        console.log(err);
+    });
+}

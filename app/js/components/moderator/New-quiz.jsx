@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {getQuestions, getAwards} from '../../utils/appService';
+
 // Material UI
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -8,6 +10,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
+import Checkbox from 'material-ui/Checkbox';
 
 import {
     Step,
@@ -25,9 +28,28 @@ export default class AddQuiz extends React.Component {
             loadingStepper: false,
             finishedStepper: false,
             stepIndex: 0,
+            loadingQuestions: true,
+            loadingAwards: true,
         };
         this.handleNext = this.handleNext.bind(this);
         this.handlePrev = this.handlePrev.bind(this);
+    }
+
+    componentDidMount() {
+        getQuestions((res) => {
+            this.setState({
+                loadingQuestions: false,
+                questions: res
+            });
+        });
+
+        getAwards((res) => {
+            console.log(res);
+            this.setState({
+                loadingAwards: false,
+                awards: res
+            })
+        });
     }
 
     dummyAsync (cb) {
@@ -57,6 +79,19 @@ export default class AddQuiz extends React.Component {
         }
     };
 
+    renderCheckbox(data) {
+        return data.map(function(elem, key) {
+            return (
+                <Checkbox
+                    key={key}
+                    label={elem.question || elem.name}
+                    style={{marginTop: '5px', marginBottom: '5px'}}
+                />
+            );
+        }, this);
+    }
+
+
     getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
@@ -69,15 +104,21 @@ export default class AddQuiz extends React.Component {
                                 hintText="Name"
                                 fullWidth={true}
                             /><br />
+                            <TextField
+                                floatingLabelText="Description"
+                                hintText="Description"
+                                fullWidth={true}
+                            /><br />
                             <SelectField
                                 floatingLabelText="Category"
                                 value={this.state.selectBoxValue}
                                 onChange={this.handleChange}
                                 fullWidth={true}
                             >
-                                <MenuItem value={1} primaryText="Informatic" />
-                                <MenuItem value={2} primaryText="Mathematic" />
-                                <MenuItem value={3} primaryText="Biology" />
+                                <MenuItem width={150} value={1} primaryText="Informatic" />
+                                <MenuItem width={150} value={2} primaryText="Mathematic" />
+                                <MenuItem width={150} value={3} primaryText="Biology" />
+
                             </SelectField>
                             <br />
                             <br />
@@ -87,8 +128,19 @@ export default class AddQuiz extends React.Component {
                                 mode="landscape"
                                 fullWidth={true}
                             />
+                            <DatePicker
+                                hintText="Date end"
+                                container="inline"
+                                mode="landscape"
+                                fullWidth={true}
+                            />
                             <TimePicker
                                 hintText="Time begin"
+                                autoOk={true}
+                                fullWidth={true}
+                            />
+                            <TimePicker
+                                hintText="Time end"
                                 autoOk={true}
                                 fullWidth={true}
                             />
@@ -96,24 +148,21 @@ export default class AddQuiz extends React.Component {
                     </div>
                 );
             case 1:
-                return (
-                    <div>
-                        <p>
-                            Ad group status is different than the statuses for campaigns, ads, and keywords, though the
-                            statuses can affect each other. Ad groups are contained within a campaign, and each campaign can
-                            have one or more ad groups. Within each ad group are ads, keywords, and bids.
-                        </p>
-                        <p>Something something whatever cool</p>
-                    </div>
-                );
+                if(!this.state.loadingQuestions)
+                    return (
+                        <div>
+                            {this.renderCheckbox(this.state.questions)}
+                        </div>
+                    );
+                return(<div></div>);
             case 2:
-                return (
-                    <p>
-                        Try out different ad text to see what brings in the most customers, and learn how to
-                        enhance your ads using features like ad extensions. If you run into any problems with your
-                        ads, find out how to tell if they're running and how to resolve approval issues.
-                    </p>
-                );
+                if(!this.state.loadingAwards)
+                    return (
+                        <div>
+                            {this.renderCheckbox(this.state.awards)}
+                        </div>
+                    );
+                return(<div></div>);
             default:
                 return 'You\'re a long way from home sonny jim!';
         }
@@ -151,7 +200,7 @@ export default class AddQuiz extends React.Component {
         const {loading, stepIndex} = this.state;
 
         return (
-            <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+            <div  className="general-container" style={{width: '100%', maxWidth: 800}}>
                 <Stepper activeStep={stepIndex}>
                     <Step>
                         <StepLabel>General Quiz informations</StepLabel>

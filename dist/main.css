@@ -1152,6 +1152,13 @@ a:hover {
   position: absolute;
   right: 15%; }
 
+.general-container {
+  background-color: #FFFFFF;
+  padding: 50px 20px;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto; }
+
 .team-container {
   background-color: #FFFFFF;
   min-height: 70vh;
