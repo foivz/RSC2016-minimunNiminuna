@@ -5,6 +5,8 @@
  */
 package hr.minimunniminuna.controllers;
 
+import com.notnoop.apns.APNS;
+import com.notnoop.apns.ApnsService;
 import hr.minimunniminuna.model.Icon;
 import hr.minimunniminuna.model.Prize;
 import hr.minimunniminuna.model.Question;
@@ -15,6 +17,7 @@ import hr.minimunniminuna.repositories.QuestionRepository;
 import hr.minimunniminuna.repositories.QuizRepository;
 import hr.minimunniminuna.repositories.TeamRepository;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -135,4 +138,48 @@ public class QuizController {
             return new ResponseEntity(quiz, HttpStatus.OK);
         }
     }
+    
+    @RequestMapping(value="/{id}/notificationBefore", method = RequestMethod.GET)
+    public ResponseEntity<Quiz> notifyBeforeBeginning(@PathVariable long id){
+        
+        Quiz quiz = repo.findByIdQuiz(id);
+        
+        sendNotification("We'd like to remind you that quiz " + quiz.getName() + " is about begin in 1 minute.");
+        
+        return new ResponseEntity(quiz, HttpStatus.OK); 
+    }
+    
+    @RequestMapping(value="/{id}/notificationTeam", method = RequestMethod.GET)
+    public ResponseEntity<Quiz> notifyTeamStarts(@PathVariable long id){
+        
+        Quiz quiz = repo.findByIdQuiz(id);
+        
+        sendNotification("Your colleagues have just started quiz + " + quiz.getName() + "! Go help them out!");
+        
+        return new ResponseEntity(quiz, HttpStatus.OK); 
+    }
+    
+    @RequestMapping(value="/{id}/notificationResult", method = RequestMethod.GET)
+    public ResponseEntity<Quiz> notifyFinished(@PathVariable long id){
+        
+        Quiz quiz = repo.findByIdQuiz(id);
+        
+        sendNotification("The results for quiz + " + quiz.getName() + " have just arrived! Check them out!");
+        
+        return new ResponseEntity(quiz, HttpStatus.OK); 
+    }
+    
+     private void sendNotification(String msg){
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("rscCert.p12");
+        
+        ApnsService service = APNS.newService()
+        .withCert(is, "minimun123")
+        .withSandboxDestination()
+        .build();
+        
+        String payload = APNS.newPayload().alertBody(msg).build();
+        String token = "3838f683f713828784c7cf2b02c754a8abbe2a3f57c4582b712e87024685aab8";
+        service.push(token, payload);
+     }
 }
