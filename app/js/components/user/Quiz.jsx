@@ -194,9 +194,9 @@ export default class Quiz extends React.Component {
         this.checkAnswer();
 
         this.timer._cancelTimer();
-
+        var percent = parseInt((this.state.correctAnswerSum / this.state.quiz.questions.length) * 100);
+        var moveDuck = parseInt(( (this.state.currentQuestionIndex + 1) / this.state.quiz.questions.length) * 100);
         if (this.state.quiz.questions.length === this.state.currentQuestionIndex + 1) {
-            var percent = parseInt((this.state.correctAnswerSum / this.state.quiz.questions.length) * 100);
             setQuizPoints(this.props.params.id, percent);
             this.setState({
                dialogOpen: true,
@@ -212,6 +212,10 @@ export default class Quiz extends React.Component {
                 });
             }, 1200);
         }
+        TweenMax.to('.psyduck', 1.4, {
+            left: moveDuck + "%"
+        });
+
     }
 
     audioChange(data) {
@@ -243,6 +247,7 @@ export default class Quiz extends React.Component {
         if(!this.state.loading)
             return(
                 <div>
+                    <img src="static/imgs/panoramaa.jpg" className="quiz-bg" alt=""/>
                     <div className="text-center">
                         <ReactCountdownClock
                              seconds={this.state.timer}
@@ -277,6 +282,7 @@ export default class Quiz extends React.Component {
                         message={this.state.infoMessage}
                         autoHideDuration={3000}
                     />
+                    <img src="static/imgs/psyduck.png" className="psyduck" alt=""/>
                 </div>
             );
 

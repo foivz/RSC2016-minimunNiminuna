@@ -68,7 +68,7 @@
 
 	// GSAP
 	// React
-	var injectTapEventPlugin = __webpack_require__(579);
+	var injectTapEventPlugin = __webpack_require__(580);
 
 	// Material UI
 
@@ -36718,6 +36718,10 @@
 
 	var _Team2 = _interopRequireDefault(_Team);
 
+	var _TeamJoin = __webpack_require__(579);
+
+	var _TeamJoin2 = _interopRequireDefault(_TeamJoin);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36767,7 +36771,8 @@
 	                    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Dashboard4.default }),
 	                    _react2.default.createElement(_reactRouter.Route, { path: '/user/profile', component: _Profile2.default }),
 	                    _react2.default.createElement(_reactRouter.Route, { path: '/quiz/:id', component: _Quiz2.default }),
-	                    _react2.default.createElement(_reactRouter.Route, { path: '/user/team', component: _Team2.default })
+	                    _react2.default.createElement(_reactRouter.Route, { path: '/user/team', component: _Team2.default }),
+	                    _react2.default.createElement(_reactRouter.Route, { path: '/user/team-join', component: _TeamJoin2.default })
 	                )
 	            );
 	        }
@@ -58132,7 +58137,16 @@
 	                        _react2.default.createElement(
 	                            _MenuItem2.default,
 	                            { onTouchTap: this.handleDrawerClose.bind(this), leftIcon: _react2.default.createElement(_group2.default, null) },
-	                            'Team'
+	                            'New Team'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        _NavLink2.default,
+	                        { to: '/user/team-join' },
+	                        _react2.default.createElement(
+	                            _MenuItem2.default,
+	                            { onTouchTap: this.handleDrawerClose.bind(this), leftIcon: _react2.default.createElement(_group2.default, null) },
+	                            'Join Team'
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -68847,9 +68861,9 @@
 	            this.checkAnswer();
 
 	            this.timer._cancelTimer();
-
+	            var percent = parseInt(this.state.correctAnswerSum / this.state.quiz.questions.length * 100);
+	            var moveDuck = parseInt((this.state.currentQuestionIndex + 1) / this.state.quiz.questions.length * 100);
 	            if (this.state.quiz.questions.length === this.state.currentQuestionIndex + 1) {
-	                var percent = parseInt(this.state.correctAnswerSum / this.state.quiz.questions.length * 100);
 	                (0, _appService.setQuizPoints)(this.props.params.id, percent);
 	                this.setState({
 	                    dialogOpen: true,
@@ -68863,6 +68877,9 @@
 	                    });
 	                }, 1200);
 	            }
+	            TweenMax.to('.psyduck', 1.4, {
+	                left: moveDuck + "%"
+	            });
 	        }
 	    }, {
 	        key: 'audioChange',
@@ -68898,6 +68915,7 @@
 	            if (!this.state.loading) return _react2.default.createElement(
 	                'div',
 	                null,
+	                _react2.default.createElement('img', { src: 'static/imgs/panoramaa.jpg', className: 'quiz-bg', alt: '' }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'text-center' },
@@ -68939,7 +68957,8 @@
 	                    open: this.state.infoOpen,
 	                    message: this.state.infoMessage,
 	                    autoHideDuration: 3000
-	                })
+	                }),
+	                _react2.default.createElement('img', { src: 'static/imgs/psyduck.png', className: 'psyduck', alt: '' })
 	            );
 
 	            return _react2.default.createElement('div', null);
@@ -71116,7 +71135,6 @@
 	            var _this2 = this;
 
 	            (0, _appService.getIcons)(function (res) {
-	                console.log(res);
 	                _this2.setState({
 	                    loading: false,
 	                    icons: res
@@ -71258,8 +71276,65 @@
 /* 579 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var TeamJoin = function (_React$Component) {
+	    _inherits(TeamJoin, _React$Component);
+
+	    function TeamJoin(props) {
+	        _classCallCheck(this, TeamJoin);
+
+	        var _this = _possibleConstructorReturn(this, (TeamJoin.__proto__ || Object.getPrototypeOf(TeamJoin)).call(this, props));
+
+	        _this.state = {};
+	        return _this;
+	    }
+
+	    _createClass(TeamJoin, [{
+	        key: "render",
+	        value: function render() {
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "container" },
+	                _react2.default.createElement(
+	                    "h1",
+	                    null,
+	                    "Team Join"
+	                )
+	            );
+	        }
+	    }]);
+
+	    return TeamJoin;
+	}(_react2.default.Component);
+
+	exports.default = TeamJoin;
+	;
+
+/***/ },
+/* 580 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(7);
-	var defaultClickRejectionStrategy = __webpack_require__(580);
+	var defaultClickRejectionStrategy = __webpack_require__(581);
 
 	var alreadyInjected = false;
 
@@ -71281,14 +71356,14 @@
 	  alreadyInjected = true;
 
 	  __webpack_require__(13).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(581)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(582)(shouldRejectClick)
 	  });
 	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 580 */
+/* 581 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -71299,7 +71374,7 @@
 
 
 /***/ },
-/* 581 */
+/* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -71327,10 +71402,10 @@
 	var EventPluginUtils = __webpack_require__(15);
 	var EventPropagators = __webpack_require__(12);
 	var SyntheticUIEvent = __webpack_require__(52);
-	var TouchEventUtils = __webpack_require__(582);
+	var TouchEventUtils = __webpack_require__(583);
 	var ViewportMetrics = __webpack_require__(53);
 
-	var keyOf = __webpack_require__(583);
+	var keyOf = __webpack_require__(584);
 	var topLevelTypes = EventConstants.topLevelTypes;
 
 	var isStartish = EventPluginUtils.isStartish;
@@ -71476,7 +71551,7 @@
 
 
 /***/ },
-/* 582 */
+/* 583 */
 /***/ function(module, exports) {
 
 	/**
@@ -71524,7 +71599,7 @@
 
 
 /***/ },
-/* 583 */
+/* 584 */
 /***/ function(module, exports) {
 
 	"use strict";

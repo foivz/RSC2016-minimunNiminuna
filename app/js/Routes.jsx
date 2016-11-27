@@ -23,6 +23,7 @@ import AddModerator from './components/moderator/New-moderator.jsx';
 import AddQuiz from './components/moderator/New-quiz.jsx';
 import Quiz from './components/user/Quiz.jsx';
 import Team from './components/user/Team.jsx';
+import TeamJoin from './components/user/Team-join.jsx';
 
 export default class Routes extends React.Component {
     constructor(props) {
@@ -44,6 +45,7 @@ export default class Routes extends React.Component {
                     <Route path="/user/profile" component={Profile}/>
                     <Route path="/quiz/:id" component={Quiz}/>
                     <Route path="/user/team" component={Team}/>
+                    <Route path="/user/team-join" component={TeamJoin}/>
                 </Route>
             </Router>
         );

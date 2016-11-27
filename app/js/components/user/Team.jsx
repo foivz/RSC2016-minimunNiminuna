@@ -16,7 +16,6 @@ export default class Team extends React.Component {
 
     componentDidMount() {
         getIcons((res) => {
-            console.log(res);
             this.setState({
                 loading: false,
                 icons: res

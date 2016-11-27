@@ -1156,6 +1156,7 @@ a:hover {
   background-color: #FFFFFF;
   padding: 50px 20px;
   margin-top: 50px;
+  margin-bottom: 50px;
   margin-left: auto;
   margin-right: auto; }
 
@@ -1163,6 +1164,7 @@ a:hover {
   background-color: #FFFFFF;
   min-height: 70vh;
   margin-top: 50px;
+  margin-bottom: 50px;
   padding-bottom: 50px;
   padding-top: 50px; }
   .team-container .icon-container {
@@ -1174,6 +1176,20 @@ a:hover {
     transition: all 400ms ease; }
     .team-container img.team-icon:hover {
       opacity: 1; }
+
+.quiz-bg {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-height: 30%;
+  opacity: 0.6; }
+
+.psyduck {
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+  width: 100px;
+  height: auto; }
 
 #landing {
   position: absolute;

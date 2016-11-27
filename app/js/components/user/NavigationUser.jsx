@@ -14,6 +14,7 @@ import IconPowerOff from 'material-ui/svg-icons/action/power-settings-new';
 import IconProfile from 'material-ui/svg-icons/action/perm-identity';
 import IconTeam from 'material-ui/svg-icons/social/group';
 
+
 export default class Navigation extends React.Component {
     constructor(props) {
         super(props);
@@ -91,7 +92,13 @@ export default class Navigation extends React.Component {
 
                     <NavLink to="/user/team">
                         <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconTeam/>}>
-                            Team
+                            New Team
+                        </MenuItem>
+                    </NavLink>
+
+                    <NavLink to="/user/team-join">
+                        <MenuItem onTouchTap={this.handleDrawerClose.bind(this)} leftIcon={<IconTeam/>}>
+                            Join Team
                         </MenuItem>
                     </NavLink>
 
