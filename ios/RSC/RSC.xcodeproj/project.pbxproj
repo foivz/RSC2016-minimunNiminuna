@@ -25,6 +25,7 @@
 		52761E841DEA5468005407BA /* ChooseTeamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52761E831DEA5468005407BA /* ChooseTeamTableViewController.swift */; };
 		52761E861DEA7D02005407BA /* QuizWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52761E851DEA7D01005407BA /* QuizWrapper.swift */; };
 		52CADA971DEA98F30007E4CB /* QuestionPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CADA961DEA98F30007E4CB /* QuestionPictureViewController.swift */; };
+		52CADA991DEAC0B60007E4CB /* PictureQuestionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CADA981DEAC0B60007E4CB /* PictureQuestionResponse.swift */; };
 		52DCAB061DEA0E45009C1498 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCAB051DEA0E44009C1498 /* QuizViewController.swift */; };
 		52DCAB081DEA10B4009C1498 /* RESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCAB071DEA10B4009C1498 /* RESTClient.swift */; };
 		52DE45CC1DE7609900BEEF06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DE45CB1DE7609900BEEF06 /* AppDelegate.swift */; };
@@ -67,6 +68,7 @@
 		52761E831DEA5468005407BA /* ChooseTeamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseTeamTableViewController.swift; sourceTree = "<group>"; };
 		52761E851DEA7D01005407BA /* QuizWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizWrapper.swift; sourceTree = "<group>"; };
 		52CADA961DEA98F30007E4CB /* QuestionPictureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionPictureViewController.swift; sourceTree = "<group>"; };
+		52CADA981DEAC0B60007E4CB /* PictureQuestionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureQuestionResponse.swift; sourceTree = "<group>"; };
 		52DCAB051DEA0E44009C1498 /* QuizViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		52DCAB071DEA10B4009C1498 /* RESTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESTClient.swift; sourceTree = "<group>"; };
 		52DE45C81DE7609900BEEF06 /* RSC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +138,7 @@
 				52761E7F1DEA4763005407BA /* Question.swift */,
 				52761E811DEA482D005407BA /* QuestionCategory.swift */,
 				52761E851DEA7D01005407BA /* QuizWrapper.swift */,
+				52CADA981DEAC0B60007E4CB /* PictureQuestionResponse.swift */,
 			);
 			name = Model;
 			path = RSC/Models;
@@ -377,6 +380,7 @@
 				52DE45CC1DE7609900BEEF06 /* AppDelegate.swift in Sources */,
 				52761E801DEA4763005407BA /* Question.swift in Sources */,
 				523E0E281DE9B33300AA968A /* StoryBoardConstants.swift in Sources */,
+				52CADA991DEAC0B60007E4CB /* PictureQuestionResponse.swift in Sources */,
 				523E0E251DE9B33300AA968A /* AppSpecificConstants.swift in Sources */,
 				52761E841DEA5468005407BA /* ChooseTeamTableViewController.swift in Sources */,
 				52CADA971DEA98F30007E4CB /* QuestionPictureViewController.swift in Sources */,

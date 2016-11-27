@@ -8,5 +8,5 @@
 
 import Foundation
 public struct UIConstants {
-    static let colorMain: UInt32 = 0x00BCD4
+    static let colorMain: UInt32 = 0x3964C3
 }
