@@ -39,3 +39,32 @@ export function sendImage(image, success) {
         console.log(err);
     });
 }
+
+export function createTeam(data, success) {
+    var url = 'http://139.59.158.214:8080/team/create';
+
+    fetch(url, {
+        method: 'POST',
+        body: data,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((res) => {
+        return res.json();
+    }).then(success).catch((err) => {
+        console.log(err);
+    });
+}
+
+export function getIcons(success) {
+    var url = 'http://139.59.158.214:8080/icon/';
+
+    fetch(url, {
+        method: 'GET'
+    }).then((res) => {
+        return res.json();
+    }).then(success).catch((err) => {
+        console.log(err);
+    });
+}
+

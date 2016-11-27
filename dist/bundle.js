@@ -36694,7 +36694,7 @@
 
 	var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
-	var _Dashboard3 = __webpack_require__(505);
+	var _Dashboard3 = __webpack_require__(510);
 
 	var _Dashboard4 = _interopRequireDefault(_Dashboard3);
 
@@ -58260,6 +58260,12 @@
 
 	var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
+	var _appService = __webpack_require__(505);
+
+	var _Chip = __webpack_require__(507);
+
+	var _Chip2 = _interopRequireDefault(_Chip);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -58276,117 +58282,132 @@
 
 	        var _this = _possibleConstructorReturn(this, (DashboardModerator.__proto__ || Object.getPrototypeOf(DashboardModerator)).call(this, props));
 
-	        _this.state = {};
+	        _this.state = {
+	            loading: true
+	        };
 	        return _this;
 	    }
 
 	    _createClass(DashboardModerator, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'container dashboard-container' },
-	                _react2.default.createElement(
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            var self = this;
+	            (0, _appService.fetchQuizes)(function (res) {
+	                _this2.setState({
+	                    quizes: res,
+	                    loading: false
+	                }, function () {
+	                    self.initMap(self.state.quizes);
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'initMap',
+	        value: function initMap(quizes) {
+	            var position = { lat: 46.308483, lng: 16.340031 };
+	            var map = new google.maps.Map(document.getElementById('map'), {
+	                zoom: 17,
+	                center: position
+	            });
+	            for (var key in quizes) {
+	                new google.maps.Marker({
+	                    position: quizes[key].location,
+	                    map: map
+	                });
+	            }
+	        }
+	    }, {
+	        key: 'enterQuiz',
+	        value: function enterQuiz(id) {
+	            hashHistory.push('/quiz/' + id);
+	        }
+	    }, {
+	        key: 'renderQuizes',
+	        value: function renderQuizes() {
+	            return this.state.quizes.map(function (elem, key) {
+	                var _this3 = this;
+
+	                var author = "Author - " + elem.creator.credentials.username;
+	                return _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { className: 'col-md-4', key: key },
 	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-4' },
+	                        _Card.Card,
+	                        null,
+	                        _react2.default.createElement(_Card.CardHeader, {
+	                            title: author,
+	                            subtitle: elem.name,
+	                            avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
+	                        }),
 	                        _react2.default.createElement(
-	                            _Card.Card,
-	                            null,
-	                            _react2.default.createElement(_Card.CardHeader, {
-	                                title: 'Moderator - Jennifer Lensey',
-	                                subtitle: 'Biology Quiz',
-	                                avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
-	                            }),
-	                            _react2.default.createElement(
-	                                _Card.CardMedia,
-	                                {
-	                                    overlay: _react2.default.createElement(_Card.CardTitle, { title: 'Biology Quiz', subtitle: 'For sixth grade' })
-	                                },
-	                                _react2.default.createElement('img', { src: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg' })
-	                            ),
-	                            _react2.default.createElement(_Card.CardTitle, { title: 'Quiz', subtitle: 'Enter code: 45323' }),
-	                            _react2.default.createElement(
-	                                _Card.CardText,
-	                                null,
-	                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.'
-	                            ),
-	                            _react2.default.createElement(
-	                                _Card.CardActions,
-	                                null,
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Edit' })
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-4' },
+	                            _Card.CardMedia,
+	                            {
+	                                overlay: _react2.default.createElement(_Card.CardTitle, { title: elem.name, subtitle: 'For sixth grade' })
+	                            },
+	                            _react2.default.createElement('img', { src: elem.category.icon })
+	                        ),
+	                        _react2.default.createElement(_Card.CardTitle, { title: 'QUIZ', subtitle: elem.beginDate + ' - ' + elem.endDate }),
 	                        _react2.default.createElement(
-	                            _Card.Card,
+	                            _Card.CardText,
 	                            null,
-	                            _react2.default.createElement(_Card.CardHeader, {
-	                                title: 'Moderator - Jennifer Lensey',
-	                                subtitle: 'Biology Quiz',
-	                                avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
-	                            }),
-	                            _react2.default.createElement(
-	                                _Card.CardMedia,
-	                                {
-	                                    overlay: _react2.default.createElement(_Card.CardTitle, { title: 'Biology Quiz', subtitle: 'For sixth grade' })
-	                                },
-	                                _react2.default.createElement('img', { src: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg' })
-	                            ),
-	                            _react2.default.createElement(_Card.CardTitle, { title: 'Quiz', subtitle: 'Enter code: 45323' }),
-	                            _react2.default.createElement(
-	                                _Card.CardText,
-	                                null,
-	                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.'
-	                            ),
-	                            _react2.default.createElement(
-	                                _Card.CardActions,
-	                                null,
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Edit' })
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-4' },
+	                            'How much do you know about the countries of the world? Find out with this 10 question quiz.'
+	                        ),
 	                        _react2.default.createElement(
-	                            _Card.Card,
+	                            _Card.CardActions,
 	                            null,
-	                            _react2.default.createElement(_Card.CardHeader, {
-	                                title: 'Moderator - Jennifer Lensey',
-	                                subtitle: 'Biology Quiz',
-	                                avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
-	                            }),
-	                            _react2.default.createElement(
-	                                _Card.CardMedia,
-	                                {
-	                                    overlay: _react2.default.createElement(_Card.CardTitle, { title: 'Biology Quiz', subtitle: 'For sixth grade' })
-	                                },
-	                                _react2.default.createElement('img', { src: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg' })
-	                            ),
-	                            _react2.default.createElement(_Card.CardTitle, { title: 'Quiz', subtitle: 'Enter code: 45323' }),
-	                            _react2.default.createElement(
-	                                _Card.CardText,
-	                                null,
-	                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.'
-	                            ),
-	                            _react2.default.createElement(
-	                                _Card.CardActions,
-	                                null,
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
-	                                _react2.default.createElement(_FlatButton2.default, { label: 'Edit' })
-	                            )
+	                            _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
+	                            _react2.default.createElement(_FlatButton2.default, { label: 'Edit Quiz', onClick: function onClick() {
+	                                    return _this3.enterQuiz(elem.idQuiz);
+	                                } })
 	                        )
 	                    )
-	                )
-	            );
+	                );
+	            }, this);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var style = {
+	                chip: {
+	                    backgroundColor: '#c1c1c1',
+	                    marginBottom: '10px',
+	                    marginRight: '10px',
+	                    display: 'inline-block'
+	                }
+	            };
+
+	            if (!this.state.loading) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'container dashboard-container' },
+	                    _react2.default.createElement(
+	                        _Chip2.default,
+	                        { style: style.chip },
+	                        '#history'
+	                    ),
+	                    _react2.default.createElement(
+	                        _Chip2.default,
+	                        { style: style.chip },
+	                        '#informatic'
+	                    ),
+	                    _react2.default.createElement(
+	                        _Chip2.default,
+	                        { style: style.chip },
+	                        '#mathematic'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
+	                        this.renderQuizes()
+	                    ),
+	                    _react2.default.createElement('div', { id: 'map' })
+	                );
+	            }
+
+	            return _react2.default.createElement('div', null);
 	        }
 	    }]);
 
@@ -59910,213 +59931,14 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(177);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Card = __webpack_require__(493);
-
-	var _FlatButton = __webpack_require__(418);
-
-	var _FlatButton2 = _interopRequireDefault(_FlatButton);
-
-	var _appService = __webpack_require__(506);
-
-	var _reactRouter = __webpack_require__(326);
-
-	var _Chip = __webpack_require__(508);
-
-	var _Chip2 = _interopRequireDefault(_Chip);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Main = function (_React$Component) {
-	    _inherits(Main, _React$Component);
-
-	    function Main(props) {
-	        _classCallCheck(this, Main);
-
-	        var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
-
-	        _this.state = {
-	            loading: true
-	        };
-	        return _this;
-	    }
-
-	    _createClass(Main, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var _this2 = this;
-
-	            (0, _appService.fetchQuizes)(function (res) {
-	                _this2.setState({
-	                    quizes: res,
-	                    loading: false
-	                });
-	                _this2.initMap(res);
-	            });
-
-	            // this.initSpeechRecognition();
-	        }
-	    }, {
-	        key: 'initMap',
-	        value: function initMap(quizes) {
-	            var position = { lat: 46.308483, lng: 16.340031 };
-	            var map = new google.maps.Map(document.getElementById('map'), {
-	                zoom: 17,
-	                center: position
-	            });
-	            for (var key in quizes) {
-	                new google.maps.Marker({
-	                    position: quizes[key].location,
-	                    map: map
-	                });
-	            }
-	        }
-	    }, {
-	        key: 'enterQuiz',
-	        value: function enterQuiz(id) {
-	            _reactRouter.hashHistory.push('/quiz/' + id);
-	        }
-	    }, {
-	        key: 'renderQuizes',
-	        value: function renderQuizes() {
-	            return this.state.quizes.map(function (elem, key) {
-	                var _this3 = this;
-
-	                var author = "Author - " + elem.creator.credentials.username;
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-md-4', key: key },
-	                    _react2.default.createElement(
-	                        _Card.Card,
-	                        null,
-	                        _react2.default.createElement(_Card.CardHeader, {
-	                            title: author,
-	                            subtitle: elem.name,
-	                            avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
-	                        }),
-	                        _react2.default.createElement(
-	                            _Card.CardMedia,
-	                            {
-	                                overlay: _react2.default.createElement(_Card.CardTitle, { title: elem.name, subtitle: 'For sixth grade' })
-	                            },
-	                            _react2.default.createElement('img', { src: elem.category.icon })
-	                        ),
-	                        _react2.default.createElement(_Card.CardTitle, { title: 'QUIZ', subtitle: elem.beginDate + ' - ' + elem.endDate }),
-	                        _react2.default.createElement(
-	                            _Card.CardText,
-	                            null,
-	                            'How much do you know about the countries of the world? Find out with this 10 question quiz.'
-	                        ),
-	                        _react2.default.createElement(
-	                            _Card.CardActions,
-	                            null,
-	                            _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
-	                            _react2.default.createElement(_FlatButton2.default, { label: 'Enter Quiz', onClick: function onClick() {
-	                                    return _this3.enterQuiz(elem.idQuiz);
-	                                } })
-	                        )
-	                    )
-	                );
-	            }, this);
-	        }
-	    }, {
-	        key: 'initSpeechRecognition',
-	        value: function initSpeechRecognition() {
-	            var commandHello = {
-	                indexes: ["*"], // These spoken words will trigger the execution of the command
-	                action: function action(i, wildcard) {
-	                    // Action to be executed when a index match with spoken word
-	                    console.log(wildcard);
-	                }
-	            };
-	            artyom.addCommands(commandHello);
-
-	            artyom.initialize({
-	                lang: "en-GB",
-	                debug: true, // Show what recognizes in the Console
-	                listen: true, // Start listening after this
-	                speed: 0.9, // Talk a little bit slow
-	                mode: "normal" // This parameter is not required as it will be normal by default
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-
-	            var style = {
-	                chip: {
-	                    backgroundColor: '#c1c1c1',
-	                    marginBottom: '10px',
-	                    marginRight: '10px',
-	                    display: 'inline-block'
-	                }
-	            };
-
-	            if (!this.state.loading) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'container dashboard-container' },
-	                    _react2.default.createElement(
-	                        _Chip2.default,
-	                        { style: style.chip },
-	                        '#history'
-	                    ),
-	                    _react2.default.createElement(
-	                        _Chip2.default,
-	                        { style: style.chip },
-	                        '#informatic'
-	                    ),
-	                    _react2.default.createElement(
-	                        _Chip2.default,
-	                        { style: style.chip },
-	                        '#mathematic'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'row' },
-	                        this.renderQuizes()
-	                    ),
-	                    _react2.default.createElement('div', { id: 'map' })
-	                );
-	            }
-
-	            return _react2.default.createElement('div', null);
-	        }
-	    }]);
-
-	    return Main;
-	}(_react2.default.Component);
-
-	exports.default = Main;
-	;
-
-/***/ },
-/* 506 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
 	exports.fetchQuizes = fetchQuizes;
 	exports.fetchQuizByID = fetchQuizByID;
 	exports.sendAudio = sendAudio;
 	exports.sendImage = sendImage;
+	exports.createTeam = createTeam;
+	exports.getIcons = getIcons;
 
-	var _APIService = __webpack_require__(507);
+	var _APIService = __webpack_require__(506);
 
 	function fetchQuizes(success) {
 	    var url = '/quiz/';
@@ -60162,8 +59984,36 @@
 	    });
 	}
 
+	function createTeam(data, success) {
+	    var url = 'http://139.59.158.214:8080/team/create';
+
+	    fetch(url, {
+	        method: 'POST',
+	        body: data,
+	        headers: {
+	            'Content-Type': 'application/json'
+	        }
+	    }).then(function (res) {
+	        return res.json();
+	    }).then(success).catch(function (err) {
+	        console.log(err);
+	    });
+	}
+
+	function getIcons(success) {
+	    var url = 'http://139.59.158.214:8080/icon/';
+
+	    fetch(url, {
+	        method: 'GET'
+	    }).then(function (res) {
+	        return res.json();
+	    }).then(success).catch(function (err) {
+	        console.log(err);
+	    });
+	}
+
 /***/ },
-/* 507 */
+/* 506 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -60196,7 +60046,7 @@
 	}
 
 /***/ },
-/* 508 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60206,7 +60056,7 @@
 	});
 	exports.default = undefined;
 
-	var _Chip = __webpack_require__(509);
+	var _Chip = __webpack_require__(508);
 
 	var _Chip2 = _interopRequireDefault(_Chip);
 
@@ -60215,7 +60065,7 @@
 	exports.default = _Chip2.default;
 
 /***/ },
-/* 509 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -60270,7 +60120,7 @@
 
 	var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
 
-	var _cancel = __webpack_require__(510);
+	var _cancel = __webpack_require__(509);
 
 	var _cancel2 = _interopRequireDefault(_cancel);
 
@@ -60557,7 +60407,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 510 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60592,6 +60442,187 @@
 	NavigationCancel.muiName = 'SvgIcon';
 
 	exports.default = NavigationCancel;
+
+/***/ },
+/* 510 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(177);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Card = __webpack_require__(493);
+
+	var _FlatButton = __webpack_require__(418);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+	var _appService = __webpack_require__(505);
+
+	var _reactRouter = __webpack_require__(326);
+
+	var _Chip = __webpack_require__(507);
+
+	var _Chip2 = _interopRequireDefault(_Chip);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Main = function (_React$Component) {
+	    _inherits(Main, _React$Component);
+
+	    function Main(props) {
+	        _classCallCheck(this, Main);
+
+	        var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
+
+	        _this.state = {
+	            loading: true
+	        };
+	        return _this;
+	    }
+
+	    _createClass(Main, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            var self = this;
+	            (0, _appService.fetchQuizes)(function (res) {
+	                _this2.setState({
+	                    quizes: res,
+	                    loading: false
+	                }, function () {
+	                    self.initMap(self.state.quizes);
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'initMap',
+	        value: function initMap(quizes) {
+	            var position = { lat: 46.308483, lng: 16.340031 };
+	            var map = new google.maps.Map(document.getElementById('map'), {
+	                zoom: 17,
+	                center: position
+	            });
+	            for (var key in quizes) {
+	                new google.maps.Marker({
+	                    position: quizes[key].location,
+	                    map: map
+	                });
+	            }
+	        }
+	    }, {
+	        key: 'enterQuiz',
+	        value: function enterQuiz(id) {
+	            _reactRouter.hashHistory.push('/quiz/' + id);
+	        }
+	    }, {
+	        key: 'renderQuizes',
+	        value: function renderQuizes() {
+	            return this.state.quizes.map(function (elem, key) {
+	                var _this3 = this;
+
+	                var author = "Author - " + elem.creator.credentials.username;
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-md-4', key: key },
+	                    _react2.default.createElement(
+	                        _Card.Card,
+	                        null,
+	                        _react2.default.createElement(_Card.CardHeader, {
+	                            title: author,
+	                            subtitle: elem.name,
+	                            avatar: 'https://www.drupal.org/files/project-images/quiz_317_1081_q_image_large_0.jpg'
+	                        }),
+	                        _react2.default.createElement(
+	                            _Card.CardMedia,
+	                            {
+	                                overlay: _react2.default.createElement(_Card.CardTitle, { title: elem.name, subtitle: 'For sixth grade' })
+	                            },
+	                            _react2.default.createElement('img', { src: elem.category.icon })
+	                        ),
+	                        _react2.default.createElement(_Card.CardTitle, { title: 'QUIZ', subtitle: elem.beginDate + ' - ' + elem.endDate }),
+	                        _react2.default.createElement(
+	                            _Card.CardText,
+	                            null,
+	                            'How much do you know about the countries of the world? Find out with this 10 question quiz.'
+	                        ),
+	                        _react2.default.createElement(
+	                            _Card.CardActions,
+	                            null,
+	                            _react2.default.createElement(_FlatButton2.default, { label: 'Statistics' }),
+	                            _react2.default.createElement(_FlatButton2.default, { label: 'Enter Quiz', onClick: function onClick() {
+	                                    return _this3.enterQuiz(elem.idQuiz);
+	                                } })
+	                        )
+	                    )
+	                );
+	            }, this);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var style = {
+	                chip: {
+	                    backgroundColor: '#c1c1c1',
+	                    marginBottom: '10px',
+	                    marginRight: '10px',
+	                    display: 'inline-block'
+	                }
+	            };
+
+	            if (!this.state.loading) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'container dashboard-container' },
+	                    _react2.default.createElement(
+	                        _Chip2.default,
+	                        { style: style.chip },
+	                        '#history'
+	                    ),
+	                    _react2.default.createElement(
+	                        _Chip2.default,
+	                        { style: style.chip },
+	                        '#informatic'
+	                    ),
+	                    _react2.default.createElement(
+	                        _Chip2.default,
+	                        { style: style.chip },
+	                        '#mathematic'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
+	                        this.renderQuizes()
+	                    ),
+	                    _react2.default.createElement('div', { id: 'map' })
+	                );
+	            }
+
+	            return _react2.default.createElement('div', null);
+	        }
+	    }]);
+
+	    return Main;
+	}(_react2.default.Component);
+
+	exports.default = Main;
+	;
 
 /***/ },
 /* 511 */
@@ -68453,7 +68484,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _appService = __webpack_require__(506);
+	var _appService = __webpack_require__(505);
 
 	var _RaisedButton = __webpack_require__(381);
 
@@ -70960,6 +70991,16 @@
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
+	var _FlatButton = __webpack_require__(418);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+	var _appService = __webpack_require__(505);
+
+	var _Dialog = __webpack_require__(421);
+
+	var _Dialog2 = _interopRequireDefault(_Dialog);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -70976,14 +71017,98 @@
 
 	        var _this = _possibleConstructorReturn(this, (Team.__proto__ || Object.getPrototypeOf(Team)).call(this, props));
 
-	        _this.state = {};
+	        _this.state = {
+	            dialogOpen: false,
+	            loading: true
+	        };
 	        return _this;
 	    }
 
 	    _createClass(Team, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            (0, _appService.getIcons)(function (res) {
+	                console.log(res);
+	                _this2.setState({
+	                    loading: false,
+	                    icons: res
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'setName',
+	        value: function setName(event) {
+	            this.setState({
+	                name: event.target.value
+	            });
+	        }
+	    }, {
+	        key: 'setDescription',
+	        value: function setDescription(event) {
+	            this.setState({
+	                description: event.target.value
+	            });
+	        }
+	    }, {
+	        key: 'setIconID',
+	        value: function setIconID(id, url) {
+	            this.setState({
+	                iconID: id,
+	                url: url
+	            });
+	        }
+	    }, {
+	        key: 'createTeam',
+	        value: function createTeam() {
+	            var _this3 = this;
+
+	            var data = {
+	                'name': this.state.name,
+	                'description': this.state.description,
+	                'icon': {
+	                    'idIcon': this.state.iconID,
+	                    'url': this.state.url
+	                }
+	            };
+
+	            (0, _appService.createTeam)(data, function (res) {
+	                _this3.setState({
+	                    dialogOpen: true
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'handleClose',
+	        value: function handleClose() {
+	            this.setState({
+	                dialogOpen: false
+	            });
+	        }
+	    }, {
+	        key: 'renderIcons',
+	        value: function renderIcons() {
+	            return this.state.icons.map(function (elem, key) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-md-4', key: key },
+	                    _react2.default.createElement('img', { src: elem.url, className: 'team-icon', alt: '', onClick: this.setIconID.bind(this, elem.idIcon, elem.url) })
+	                );
+	            }, this);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement(
+
+	            var actions = [_react2.default.createElement(_FlatButton2.default, {
+	                label: 'Close',
+	                primary: true,
+	                keyboardFocused: true,
+	                onTouchTap: this.handleClose.bind(this)
+	            })];
+
+	            if (!this.state.loading) return _react2.default.createElement(
 	                'div',
 	                { className: 'container team-container' },
 	                _react2.default.createElement(
@@ -70996,24 +71121,44 @@
 	                            hintText: 'Team Name',
 	                            floatingLabelText: 'Team Name',
 	                            type: 'text',
-	                            fullWidth: true
+	                            fullWidth: true,
+	                            onChange: this.setName.bind(this)
 	                        }),
 	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(_TextField2.default, {
 	                            hintText: 'Description',
 	                            floatingLabelText: 'Description',
 	                            type: 'text',
-	                            fullWidth: true
+	                            fullWidth: true,
+	                            onChange: this.setDescription.bind(this)
 	                        }),
 	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'row icon-container' },
+	                            this.renderIcons()
+	                        ),
+	                        _react2.default.createElement(
+	                            _Dialog2.default,
+	                            {
+	                                title: 'Dialog With Actions',
+	                                actions: actions,
+	                                modal: false,
+	                                open: this.state.dialogOpen,
+	                                onRequestClose: this.handleClose.bind(this)
+	                            },
+	                            'New team successfully created!'
+	                        ),
 	                        _react2.default.createElement(_RaisedButton2.default, {
 	                            label: 'Add team',
 	                            primary: true,
-	                            fullWidth: true
+	                            fullWidth: true,
+	                            onTouchTap: this.createTeam.bind(this)
 	                        })
 	                    )
 	                )
 	            );
+	            return _react2.default.createElement('div', null);
 	        }
 	    }]);
 

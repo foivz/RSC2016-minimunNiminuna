@@ -1154,7 +1154,19 @@ a:hover {
 
 .team-container {
   background-color: #FFFFFF;
-  min-height: 70vh; }
+  min-height: 70vh;
+  margin-top: 50px;
+  padding-bottom: 50px;
+  padding-top: 50px; }
+  .team-container .icon-container {
+    margin: 30px 0; }
+  .team-container img.team-icon {
+    opacity: 0.9;
+    cursor: pointer;
+    width: 100%;
+    transition: all 400ms ease; }
+    .team-container img.team-icon:hover {
+      opacity: 1; }
 
 #landing {
   position: absolute;

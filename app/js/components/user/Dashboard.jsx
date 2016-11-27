@@ -14,15 +14,16 @@ export default class Main extends React.Component {
     }
 
     componentDidMount() {
+        var self = this;
         fetchQuizes((res) => {
             this.setState({
                 quizes: res,
                 loading: false
+            }, function() {
+                self.initMap(self.state.quizes);
             });
-            this.initMap(res);
-        });
 
-        // this.initSpeechRecognition();
+        });
     }
 
     initMap(quizes) {
@@ -71,24 +72,6 @@ export default class Main extends React.Component {
                 </div>
             );
         }, this);
-    }
-
-    initSpeechRecognition() {
-        var commandHello = {
-            indexes:["*"], // These spoken words will trigger the execution of the command
-            action:function(i, wildcard){ // Action to be executed when a index match with spoken word
-                console.log(wildcard);
-            }
-        };
-        artyom.addCommands(commandHello);
-
-        artyom.initialize({
-            lang:"en-GB",
-            debug:true, // Show what recognizes in the Console
-            listen:true, // Start listening after this
-            speed:0.9, // Talk a little bit slow
-            mode:"normal" // This parameter is not required as it will be normal by default
-        });
     }
 
     render() {
